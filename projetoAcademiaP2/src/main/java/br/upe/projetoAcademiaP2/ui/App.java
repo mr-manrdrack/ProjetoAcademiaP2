@@ -15,6 +15,7 @@ public class App {
             System.out.println("Escolha uma opção: ");
 
             int opcao = sc.nextInt();
+            sc.nextLine();
 
             switch (opcao){
                 case 1:

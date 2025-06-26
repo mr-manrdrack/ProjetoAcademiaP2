@@ -28,23 +28,100 @@ public class InterfaceAluno {
             System.out.println("1 - Plano de Treino\n2 - Exercícios\n3 - Seção de Treino\n4 - Indicadores Biomédicos\n5 - Relatório de evolução\n6 - Sair");
             System.out.println("Escolha uma opção: ");
             int opcao = sc.nextInt();
+            sc.nextLine();
 
             switch (opcao){
                 case 1:
-                    System.out.println("1 - Visualizar plano de treino\n2 - Cadastrar Plano de treino\n3 - Modificar plano de treino\n4 - Voltar");
+                    planoTreino();
+                    break;
                 case 2:
-                    System.out.println("1 - Listar exercícios\n2 - Cadastrar exercício\n3 - Voltar");
+                    exercicios();
+                    break;
                 case 3:
-                    //cadastrar seção de treino
+                    secaoTreino();
+                    break;
                 case 4:
-                    System.out.println("1 - Cadastrar indicadores\n2 - Listar indicadores\n3 - Listar indicadores\n4 - Voltar");
+                    indicadoresBio();
+                    break;
                 case 5:
-                    //gerar arquivo/relatório de evolução com os indicadores biomédicos
+                    relatorioEvolucao();
+                    break;
                 case 6:
                     sair = true;
+                    break;
                 default:
                     System.out.println("Opção inválida! Tente novamente.");
             }
         }
+    }
+
+    public void planoTreino(){
+        System.out.println("1 - Visualizar plano de treino\n2 - Cadastrar Plano de treino\n3 - Modificar plano de treino\n4 - Voltar");
+        System.out.println("Escolha uma opção: ");
+        int opcao = sc.nextInt();
+        sc.nextLine();
+
+        switch (opcao){
+            case 1:
+                //visualizar plano de treino
+                break;
+            case 2:
+                //cadastrar plano de treino
+                break;
+            case 3:
+                //modificar plano de treino
+                break;
+            case 4:
+                break;
+            default:
+                System.out.println("Opção inválida! Tente novamente.");
+        }
+    }
+    public void exercicios(){
+        System.out.println("1 - Listar exercícios\n2 - Cadastrar exercício\n3 - Voltar");
+        System.out.println("Escolha uma opção: ");
+        int opcao = sc.nextInt();
+        sc.nextLine();
+
+        switch (opcao){
+            case 1:
+                //listar exercicio
+                break;
+            case 2:
+                //cadastrar exercicio
+                break;
+            case 3:
+                break;
+            default:
+                System.out.println("Opção inválida! Tente novamente.");
+        }
+    }
+    public void secaoTreino(){
+        //cadastrar seção de treino
+    }
+    public void indicadoresBio(){
+        System.out.println("1 - Cadastrar indicadores\n2 - Listar indicadores\n3 - Modificar indicadores\n4 - Voltar");
+        System.out.println("Escolha uma opção: ");
+        int opcao = sc.nextInt();
+        sc.nextLine();
+
+        switch (opcao){
+            case 1:
+                //cadastrar indicadores
+                break;
+            case 2:
+                //listar indicadores
+                break;
+            case 3:
+                //modificar indicadores
+                break;
+            case 4:
+                break;
+            default:
+                System.out.println("Opção inválida! Tente novamente.");
+        }
+    }
+    public void relatorioEvolucao(){
+        //gerar arquivo/relatório de evolução com os indicadores biomédicos
     }
 }
