@@ -41,7 +41,7 @@ public class InterfaceAluno {
                 case 5:
                     //gerar arquivo/relatório de evolução com os indicadores biomédicos
                 case 6:
-                    return;
+                    sair = true;
                 default:
                     System.out.println("Opção inválida! Tente novamente.");
             }
