@@ -14,6 +14,7 @@ public class PlanoDeTreino {
     private List<ItemPlanoTreino> itens;
 
     public PlanoDeTreino() {
+
         this.itens = new ArrayList<>();
     }
 
@@ -82,7 +83,7 @@ public class PlanoDeTreino {
         for (ItemPlanoTreino item : itens) {
             if (item.getExercicio().getNome().equalsIgnoreCase(exercicio.getNome())) {
                 return item;
-            }
+            } //conferir se isso é no beans, porque precisamos percorrer os itens do plano de treino para sabrer os exercicios
         }
         return null;
     }
