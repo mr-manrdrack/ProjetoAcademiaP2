@@ -7,6 +7,7 @@ public interface IExercicioRepository {
     Exercicio create(Exercicio e);
     Exercicio findByNome(String nome);
     List<Exercicio> findAll();
+    Exercicio update(Exercicio e);
     boolean delete(String nome);
 }
 
