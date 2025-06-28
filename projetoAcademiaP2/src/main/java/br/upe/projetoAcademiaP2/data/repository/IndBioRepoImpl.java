@@ -1,7 +1,7 @@
 package br.upe.projetoAcademiaP2.data.repository;
 
 import br.upe.projetoAcademiaP2.data.beans.IndicadorBio;
-import br.upe.projetoAcademiaP2.data.repository.interfaces.IIndicadorBio;
+import br.upe.projetoAcademiaP2.data.repository.interfaces.IIndBioRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,14 +15,12 @@ public class IndBioRepoImpl implements IIndBioRepository {
     private final Map<String, IndicadorBiomedico> indicadoresBiomedicos = new HashMap<>();
 
     @Override
-    public IndicadorBiomedico save(IndicadorBiomedico indicadorBiomedico) {
+    public IndicadorBiomedico create(IndicadorBiomedico indicadorBiomedico) {
 
         if (indicadorBiomedico.getId() == null || indicadorBiomedico.getId().isEmpty()) {
-            System.err.println("Erro: Não é possível salvar Indicador Biomédico sem um ID. O ID deve ser fornecido externamente.");
-
+            System.err.println("Não é possível salvar Indicador Biomédico sem um ID.");
             return null;
         }
-
         indicadoresBiomedicos.put(indicadorBiomedico.getId(), indicadorBiomedico);
         return indicadorBiomedico;
     }
@@ -41,7 +39,7 @@ public class IndBioRepoImpl implements IIndBioRepository {
     public IndicadorBiomedico update(IndicadorBiomedico indicadorBiomedico) {
 
         if (indicadorBiomedico.getId() == null || !indicadoresBiomedicos.containsKey(indicadorBiomedico.getId())) {
-            System.err.println("Erro: Indicador Biomédico com ID " + indicadorBiomedico.getId() + " não encontrado para atualização.");
+            System.err.println("Indicador Biomédico com ID " + indicadorBiomedico.getId() + " não encontrado para atualização.");
             return null;
         }
         indicadoresBiomedicos.put(indicadorBiomedico.getId(), indicadorBiomedico); // Sobrescreve o indicador existente
