@@ -1,6 +1,6 @@
-package data.repository;
+package br.upe.projetoAcademiaP2.data.repository;
 
-import data.beans.Usuario;
+import br.upe.projetoAcademiaP2.data.beans.Usuario;
 
 public interface IUsuarioRepository {
     Usuario create(Usuario u);
