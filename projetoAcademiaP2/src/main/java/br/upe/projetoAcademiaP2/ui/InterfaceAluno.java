@@ -2,6 +2,8 @@ package br.upe.projetoAcademiaP2.ui;
 
 import java.util.Scanner;
 
+import br.upe.projetoAcademiaP2.business.UsuarioBusiness;
+
 public class InterfaceAluno {
 
     protected UsuarioBusiness usuarioBusiness;

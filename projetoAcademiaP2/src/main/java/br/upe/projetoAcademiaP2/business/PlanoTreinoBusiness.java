@@ -1,33 +1,48 @@
-/* 
 package br.upe.projetoAcademiaP2.business;
 
 import br.upe.projetoAcademiaP2.data.beans.PlanoTreino;
 import br.upe.projetoAcademiaP2.data.beans.Usuario;
-//import br.upe.projetoAcademiaP2.data.repository.interfaces.IPlanoTreinoRepository;
-//import br.upe.projetoAcademiaP2.repository.PlanoTreinoRepoImpl;
+import br.upe.projetoAcademiaP2.data.repository.interfaces.IUsuarioRepository;
+import br.upe.projetoAcademiaP2.data.repository.UsuarioRepository; 
+
+import java.util.List;
 
 public class PlanoTreinoBusiness {
 
-    private IPlanoTreinoRepository planoTreinoRepository;
-
+    
+    private IUsuarioRepository usuarioRepository;
 
     public PlanoTreinoBusiness() {
-        this.planoTreinoRepository = new PlanoTreinoRepoImpl();
+        
+        this.usuarioRepository = new UsuarioRepository();
     }
 
+    
     public void cadastrarPlanoDeTreino(Usuario usuario, PlanoTreino plano) {
-        usuario.setPlanoTreino(plano);
-        planoTreinoRepository.salvar(plano);
-        System.out.println("Plano de treino cadastrado para " + usuario.getNome());
+        if (usuario == null || plano == null) {
+            System.err.println("Usuário ou Plano de Treino nulos.");
+            return;
+        }
+        
+        usuario.addPlanoTreino(plano);
+        
+        
+        usuarioRepository.update(usuario);
+        
+        System.out.println("Plano de treino '" + plano.getNomePlano() + "' cadastrado para o usuário " + usuario.getNome());
     }
 
-    public PlanoTreino visualizarPlanoDeTreino(Usuario usuario) {
-        return planoTreinoRepository.buscarPlanoPorUsuario(usuario);
+    public List<PlanoTreino> visualizarPlanosDeTreino(Usuario usuario) {
+        return usuario.getPlanTreinos();
     }
     
-    public void modificarPlanoDeTreino(PlanoTreino plano) {
-        planoTreinoRepository.salvar(plano);
-        System.out.println("Plano de treino modificado com sucesso!");
+    
+    public void modificarPlanoDeTreino(Usuario usuario) {
+         if (usuario == null) {
+            System.err.println("Usuário nulo, não é possível salvar as modificações do plano.");
+            return;
+        }
+        usuarioRepository.update(usuario);
+        System.out.println("Plano de treino do usuário " + usuario.getNome() + " atualizado com sucesso!");
     }
 }
-*/
