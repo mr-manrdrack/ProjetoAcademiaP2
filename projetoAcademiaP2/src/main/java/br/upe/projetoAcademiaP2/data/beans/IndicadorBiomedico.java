@@ -61,4 +61,13 @@ public class IndicadorBiomedico {
     public void setPercentualMassaMagra(Double percentualMassaMagra) {
         this.percentualMassaMagra = percentualMassaMagra;
     }
+
+    public Double getImc(){
+
+        return imc;
+    }
+
+    public void setImc(Double imc){
+        this.imc = imc;
+    }
 }

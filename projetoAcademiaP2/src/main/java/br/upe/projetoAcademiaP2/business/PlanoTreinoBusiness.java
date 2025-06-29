@@ -1,9 +1,10 @@
+/* 
 package br.upe.projetoAcademiaP2.business;
 
-import br.upe.projetoAcademiaP2.beans.PlanoTreino;
-import br.upe.projetoAcademiaP2.beans.Usuario;
-import br.upe.projetoAcademiaP2.repository.IPlanoTreinoRepository;
-import br.upe.projetoAcademiaP2.repository.PlanoTreinoRepoImpl;
+import br.upe.projetoAcademiaP2.data.beans.PlanoTreino;
+import br.upe.projetoAcademiaP2.data.beans.Usuario;
+//import br.upe.projetoAcademiaP2.data.repository.interfaces.IPlanoTreinoRepository;
+//import br.upe.projetoAcademiaP2.repository.PlanoTreinoRepoImpl;
 
 public class PlanoTreinoBusiness {
 
@@ -29,3 +30,4 @@ public class PlanoTreinoBusiness {
         System.out.println("Plano de treino modificado com sucesso!");
     }
 }
+*/

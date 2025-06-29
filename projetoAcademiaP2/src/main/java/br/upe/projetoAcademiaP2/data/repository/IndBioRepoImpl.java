@@ -18,11 +18,9 @@ public class IndBioRepoImpl implements IIndBioRepository {
     public IndicadorBiomedico save(IndicadorBiomedico indicadorBiomedico) {
 
         if (indicadorBiomedico.getId() == null || indicadorBiomedico.getId().isEmpty()) {
-            System.err.println("Erro: Não é possível salvar Indicador Biomédico sem um ID. O ID deve ser fornecido externamente.");
-
+            System.err.println("Não é possível salvar Indicador Biomédico sem um ID.");
             return null;
         }
-
         indicadoresBiomedicos.put(indicadorBiomedico.getId(), indicadorBiomedico);
         return indicadorBiomedico;
     }
@@ -41,7 +39,7 @@ public class IndBioRepoImpl implements IIndBioRepository {
     public IndicadorBiomedico update(IndicadorBiomedico indicadorBiomedico) {
 
         if (indicadorBiomedico.getId() == null || !indicadoresBiomedicos.containsKey(indicadorBiomedico.getId())) {
-            System.err.println("Erro: Indicador Biomédico com ID " + indicadorBiomedico.getId() + " não encontrado para atualização.");
+            System.err.println("Indicador Biomédico com ID " + indicadorBiomedico.getId() + " não encontrado para atualização.");
             return null;
         }
         indicadoresBiomedicos.put(indicadorBiomedico.getId(), indicadorBiomedico); // Sobrescreve o indicador existente
@@ -52,5 +50,6 @@ public class IndBioRepoImpl implements IIndBioRepository {
     public void deleteById(String id) {
         indicadoresBiomedicos.remove(id);
     }
+
 }
 

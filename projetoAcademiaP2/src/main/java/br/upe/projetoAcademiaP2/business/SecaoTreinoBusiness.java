@@ -1,7 +1,8 @@
+/* 
 package br.upe.projetoAcademiaP2.business;
 
-import br.upe.projetoAcademiaP2.beans.ItemPlanoTreino;
-import br.upe.projetoAcademiaP2.beans.PlanoTreino;
+import br.upe.projetoAcademiaP2.data.beans.ItemPlanoTreino;
+import br.upe.projetoAcademiaP2.data.beans.PlanoTreino;
 
 public class SecaoTreinoBusiness {
 
@@ -12,7 +13,7 @@ public class SecaoTreinoBusiness {
     }
 
     public void iniciarSessao(PlanoTreino plano) {
-        System.out.println("Iniciando seção de treino para o plano: " + plano.getNome());
+        System.out.println("Iniciando seção de treino para o plano: " + plano.getNomePlano());
     }
 
     public void registrarPerformance(PlanoTreino plano, ItemPlanoTreino itemOriginal, double cargaRealizada, String repeticoesRealizadas) {
@@ -32,3 +33,4 @@ public class SecaoTreinoBusiness {
         }
     }
 }
+*/

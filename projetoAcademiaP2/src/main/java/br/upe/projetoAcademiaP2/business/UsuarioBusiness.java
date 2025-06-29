@@ -1,10 +1,11 @@
+
 package br.upe.projetoAcademiaP2.business;
 
 import br.upe.projetoAcademiaP2.data.beans.Adm;
 import br.upe.projetoAcademiaP2.data.beans.Comum;
-import br.upe.projetoAcademiaP2.beans.Usuario;
-import br.upe.projetoAcademiaP2.repository.IUsuarioRepository;
-import br.upe.projetoAcademiaP2.repository.UsuarioRepoImpl;
+import br.upe.projetoAcademiaP2.data.beans.Usuario;
+import br.upe.projetoAcademiaP2.data.repository.interfaces.IUsuarioRepository;
+import br.upe.projetoAcademiaP2.data.repository.UsuarioRepository;
 
 import java.util.List;
 
@@ -13,11 +14,11 @@ public class UsuarioBusiness {
     private IUsuarioRepository usuarioRepository;
 
     public UsuarioBusiness() {
-        this.usuarioRepository = new UsuarioRepoImpl();
+        this.usuarioRepository = new UsuarioRepository();
     }
 
     public String autenticar(String email, String senha) {
-        Usuario usuario = usuarioRepository.buscarPorEmail(email);
+        Usuario usuario = usuarioRepository.findByEmail(email);
 
         if (usuario != null && usuario.getSenha().equals(senha)) {
             if (usuario instanceof Administrador) {
