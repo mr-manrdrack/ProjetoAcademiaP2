@@ -7,6 +7,7 @@ public abstract class Usuario {
     private String nome;
     private String telefone;
     private String email;
+    private String senha; // ALTERADO: Campo senha adicionado
     private Double pesoAtual;
     private Double alturaAtual;
     private Double percGorduraAtual;
@@ -19,18 +20,18 @@ public abstract class Usuario {
         this.indicaBio = new ArrayList<>();
     }
 
-    public Usuario(String nome, String telefone, String email, Double pesoAtual, Double alturaAtual, Double percGorduraAtual){
-        // Construtor completo
-        this(); // Chama o construtor padrão para inicializar as listas
+    // ALTERADO: Construtor atualizado para incluir a senha
+    public Usuario(String nome, String telefone, String email, String senha, Double pesoAtual, Double alturaAtual, Double percGorduraAtual){
+        this(); 
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
+        this.senha = senha; // ALTERADO: Atribuição da senha
         this.pesoAtual = pesoAtual;
         this.alturaAtual = alturaAtual;
         this.percGorduraAtual = percGorduraAtual;
     }
     
-    // NOVO: Método de ajuda para adicionar um plano de forma segura
     public void addPlanoTreino(PlanoTreino plano) {
         if (this.planTreinos == null) {
             this.planTreinos = new ArrayList<>();
@@ -38,13 +39,18 @@ public abstract class Usuario {
         this.planTreinos.add(plano);
     }
     
-    // ... Getters e Setters existentes ...
+    // Getters e Setters
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
     public String getTelefone() { return telefone; }
     public void setTelefone(String telefone) { this.telefone = telefone; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    
+    // NOVO: Getter e Setter para a senha
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
+    
     public Double getPesoAtual() { return pesoAtual; }
     public void setPesoAtual(Double pesoAtual) { this.pesoAtual = pesoAtual; }
     public Double getAlturaAtual() { return alturaAtual; }

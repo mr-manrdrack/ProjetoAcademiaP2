@@ -12,8 +12,12 @@ public class UsuarioRepository implements IUsuarioRepository {
 
     @Override
     public Usuario create(Usuario usuario) {
-        usuarios.add(usuario);
-        return usuario;
+        // Para evitar duplicatas, podemos verificar se o usuário já existe
+        if (findByEmail(usuario.getEmail()) == null) {
+            usuarios.add(usuario);
+            return usuario;
+        }
+        return null; // Retorna null se o usuário já existe
     }
 
     @Override
@@ -24,6 +28,12 @@ public class UsuarioRepository implements IUsuarioRepository {
             }
         }
         return null;
+    }
+    
+    // NOVO: Implementação do método listarTodos
+    @Override
+    public List<Usuario> listarTodos() {
+        return new ArrayList<>(usuarios); // Retorna uma cópia para proteger a lista original
     }
 
     @Override
@@ -42,6 +52,7 @@ public class UsuarioRepository implements IUsuarioRepository {
         if (existente != null) {
             existente.setNome(usuario.getNome());
             existente.setTelefone(usuario.getTelefone());
+            existente.setSenha(usuario.getSenha()); // Importante atualizar a senha também
             existente.setPesoAtual(usuario.getPesoAtual());
             existente.setAlturaAtual(usuario.getAlturaAtual());
             existente.setPercGorduraAtual(usuario.getPercGorduraAtual());
@@ -53,4 +64,3 @@ public class UsuarioRepository implements IUsuarioRepository {
         return null;
     }
 }
-

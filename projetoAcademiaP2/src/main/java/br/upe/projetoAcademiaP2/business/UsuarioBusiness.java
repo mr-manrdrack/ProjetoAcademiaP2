@@ -1,4 +1,3 @@
-
 package br.upe.projetoAcademiaP2.business;
 
 import br.upe.projetoAcademiaP2.data.beans.Adm;
@@ -18,10 +17,11 @@ public class UsuarioBusiness {
     }
 
     public String autenticar(String email, String senha) {
+        // A lógica de autenticação agora funciona pois Usuario tem getSenha()
         Usuario usuario = usuarioRepository.findByEmail(email);
 
         if (usuario != null && usuario.getSenha().equals(senha)) {
-            if (usuario instanceof Administrador) {
+            if (usuario instanceof Adm) { // ALTERADO: Corrigido para a classe Adm
                 return "ADM";
             } else if (usuario instanceof Comum) {
                 return "ALUNO";
@@ -31,18 +31,20 @@ public class UsuarioBusiness {
     }
 
     public void cadastrarUsuario(Usuario usuario) {
-        usuarioRepository.salvar(usuario);
+        // ALTERADO: Chamando o método 'create' que existe no repositório
+        usuarioRepository.create(usuario);
         System.out.println("Usuário cadastrado com sucesso!");
     }
 
     public List<Usuario> listarUsuarios() {
+        // ALTERADO: Chamando o método 'listarTodos' que agora existe
         return usuarioRepository.listarTodos();
     }
 
     public void deletarUsuario(String email) {
-        Usuario usuario = usuarioRepository.buscarPorEmail(email);
-        if (usuario != null) {
-            usuarioRepository.deletar(usuario);
+        // ALTERADO: Lógica simplificada e chamada correta ao método 'delete'
+        boolean deletado = usuarioRepository.delete(email);
+        if (deletado) {
             System.out.println("Usuário removido com sucesso!");
         } else {
             System.out.println("Usuário não encontrado.");
@@ -50,7 +52,12 @@ public class UsuarioBusiness {
     }
     
     public void atualizarUsuario(Usuario usuario) {
-        usuarioRepository.salvar(usuario);
-        System.out.println("Dados do usuário atualizados com sucesso!");
+        // ALTERADO: Chamando o método 'update' que existe no repositório
+        Usuario atualizado = usuarioRepository.update(usuario);
+        if (atualizado != null) {
+            System.out.println("Dados do usuário atualizados com sucesso!");
+        } else {
+            System.out.println("Falha ao atualizar: usuário não encontrado.");
+        }
     }
 }
