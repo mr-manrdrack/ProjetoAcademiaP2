@@ -6,7 +6,7 @@ import br.upe.projetoAcademiaP2.data.repository.interfaces.IExercicioRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExercicioRepository implements IExercicioRepository {
+public class ExercicioRepoImpl implements IExercicioRepository {
 
     private List<Exercicio> exercicios = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class ExercicioRepository implements IExercicioRepository {
         Exercicio existente = findByNome(e.getNome());
         if (existente != null) {
             existente.setDescricao(e.getDescricao());
-            existente.setGif(e.getGif());
+            existente.setCaminhoGif(e.getCaminhoGif());
             return existente;
         }
         return null;

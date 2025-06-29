@@ -1,6 +1,6 @@
-package br.upe.projetoAcademiaP2.data.repository;
+package br.upe.projetoAcademiaP2.data.repository.interfaces;
 
-import br.upe.projetoAcademiaP2.data.beans.IndicadorBio;
+import br.upe.projetoAcademiaP2.data.beans.IndicadorBiomedico;
 import java.util.List;
 import java.util.Optional;
 

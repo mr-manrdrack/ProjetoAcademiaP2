@@ -1,4 +1,4 @@
-package br.upe.projetoAcademiaP2.data.repository;
+package br.upe.projetoAcademiaP2.data.repository.interfaces;
 
 import br.upe.projetoAcademiaP2.data.beans.Usuario;
 

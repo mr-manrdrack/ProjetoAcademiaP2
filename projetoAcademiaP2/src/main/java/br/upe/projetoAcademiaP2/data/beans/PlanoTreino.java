@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PlanoDeTreino {
+public class PlanoTreino {
 
     private int id;
     private String nomePlano;
@@ -13,12 +13,12 @@ public class PlanoDeTreino {
     private Usuario usuario;
     private List<ItemPlanoTreino> itens;
 
-    public PlanoDeTreino() {
+    public PlanoTreino() {
 
         this.itens = new ArrayList<>();
     }
 
-    public PlanoDeTreino(int id, String nomePlano, Date inicioPlano, Date fimPlano, Usuario usuario) {
+    public PlanoTreino(int id, String nomePlano, Date inicioPlano, Date fimPlano, Usuario usuario) {
         this.id = id;
         this.nomePlano = nomePlano;
         this.inicioPlano = inicioPlano;

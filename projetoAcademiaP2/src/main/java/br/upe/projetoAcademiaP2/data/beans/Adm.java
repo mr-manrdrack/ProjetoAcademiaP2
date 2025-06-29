@@ -6,7 +6,7 @@ public class Adm extends Usuario {
         super();
     }
 
-    public Adm(String nome, String telefone, String email) {
+    public Adm(String nome, String telefone, String email, Double pesoAtual, Double alturaAtual, Double percGorduraAtual) {
 
-        super(nome, telefone, email);
+        super(nome, telefone, email, pesoAtual, alturaAtual, percGorduraAtual);
     }}

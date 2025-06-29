@@ -1,7 +1,7 @@
 package br.upe.projetoAcademiaP2.business;
 
-import br.upe.projetoAcademiaP2.beans.Administrador;
-import br.upe.projetoAcademiaP2.beans.Comum;
+import br.upe.projetoAcademiaP2.data.beans.Adm;
+import br.upe.projetoAcademiaP2.data.beans.Comum;
 import br.upe.projetoAcademiaP2.beans.Usuario;
 import br.upe.projetoAcademiaP2.repository.IUsuarioRepository;
 import br.upe.projetoAcademiaP2.repository.UsuarioRepoImpl;

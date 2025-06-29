@@ -1,7 +1,7 @@
 package br.upe.projetoAcademiaP2.data.repository;
 
-import br.upe.projetoAcademiaP2.data.beans.IndicadorBio;
-import br.upe.projetoAcademiaP2.data.repository.interfaces.IIndicadorBio;
+import br.upe.projetoAcademiaP2.data.beans.IndicadorBiomedico;
+import br.upe.projetoAcademiaP2.data.repository.interfaces.IIndBioRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
