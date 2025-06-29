@@ -21,7 +21,7 @@ public class UsuarioBusiness {
         Usuario usuario = usuarioRepository.findByEmail(email);
 
         if (usuario != null && usuario.getSenha().equals(senha)) {
-            if (usuario instanceof Adm) { // ALTERADO: Corrigido para a classe Adm
+            if (usuario instanceof Adm) { 
                 return "ADM";
             } else if (usuario instanceof Comum) {
                 return "ALUNO";
