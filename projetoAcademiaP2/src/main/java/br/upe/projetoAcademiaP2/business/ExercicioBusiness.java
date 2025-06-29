@@ -1,4 +1,4 @@
-package br.upe.projetoAcademiaP2.business;
+/*package br.upe.projetoAcademiaP2.business;
 
 public class ExercicioBusiness{
     private IExercicioRepository exercicioRepo;
@@ -15,3 +15,4 @@ public class ExercicioBusiness{
     }
 
 }
+*/

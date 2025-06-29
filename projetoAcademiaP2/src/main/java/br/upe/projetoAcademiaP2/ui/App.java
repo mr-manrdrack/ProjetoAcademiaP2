@@ -3,11 +3,14 @@ package br.upe.projetoAcademiaP2.ui;
 import java.util.Scanner;
 
 import br.upe.projetoAcademiaP2.business.UsuarioBusiness;
+import br.upe.projetoAcademiaP2.data.beans.Usuario;
+import br.upe.projetoAcademiaP2.data.repository.UsuarioCsvRepository;
 
 public class App {
 
     private static Scanner sc = new Scanner(System.in);
     private static UsuarioBusiness usuarioBusiness = new UsuarioBusiness();
+    private static UsuarioCsvRepository usuarioCsvRepository = new UsuarioCsvRepository();
 
     public static void main (String[] args){
 
@@ -33,27 +36,37 @@ public class App {
     }
 
     private static void realizarLogin() {
-        System.out.println("E-mail: ");
+        System.out.print("E-mail: ");
         String email = sc.nextLine();
-        System.out.println("Senha: ");
+        System.out.print("Senha: ");
         String senha = sc.nextLine();
 
         String tipoUsuario = usuarioBusiness.autenticar(email, senha);
 
-        if (tipoUsuario != null){
-            System.out.println("Login realizado com sucesso!");
+        if (tipoUsuario != null) {
+            // ALTERADO: Buscamos o objeto do usuário que acabou de logar
+            Usuario usuarioLogado = usuarioCsvRepository.findByEmail(email);
+            
+            if (usuarioLogado == null) {
+                System.out.println("Erro crítico: usuário autenticado mas não encontrado. Contate o suporte.");
+                return;
+            }
 
-            switch (tipoUsuario){
+            System.out.println("\nLogin realizado com sucesso!");
+
+            switch (tipoUsuario) {
                 case "ADM":
-                    InterfaceAdm interfaceAdm = new InterfaceAdm();
+                    // ALTERADO: Passamos o objeto do admin para o construtor
+                    InterfaceAdm interfaceAdm = new InterfaceAdm(usuarioLogado);
                     interfaceAdm.exibirMenu();
                     break;
                 case "ALUNO":
-                    InterfaceAluno interfaceAluno = new InterfaceAluno();
+                    // ALTERADO: Passamos o objeto do aluno para o construtor
+                    InterfaceAluno interfaceAluno = new InterfaceAluno(usuarioLogado);
                     interfaceAluno.exibirMenu();
                     break;
             }
-        }else {
+        } else {
             System.out.println("E-mail ou senha inválidos! Tente novamente.");
         }
     }

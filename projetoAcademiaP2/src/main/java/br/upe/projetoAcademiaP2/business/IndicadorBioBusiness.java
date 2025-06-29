@@ -1,4 +1,4 @@
-package br.upe.projetoAcademiaP2.business;
+/*package br.upe.projetoAcademiaP2.business;
 
 public class IndicadorBioBusiness{
     private UsuarioBusiness usuarioBusiness;
@@ -26,3 +26,4 @@ public class IndicadorBioBusiness{
 
     }
 }
+*/
