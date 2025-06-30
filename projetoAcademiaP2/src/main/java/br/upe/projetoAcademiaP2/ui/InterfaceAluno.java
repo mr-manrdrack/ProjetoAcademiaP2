@@ -16,7 +16,7 @@ public class InterfaceAluno {
     private UsuarioBusiness usuarioBusiness;
     private ExercicioBusiness exercicioBusiness;
     private PlanoTreinoBusiness planoTreinoBusiness;
-    private IndicadorBioBusiness indicadorBiomedicoBusiness;
+    private IndicadorBiomedicoBusiness indicadorBiomedicoBusiness;
     private SecaoTreinoBusiness secaoTreinoBusiness;
     private Scanner sc;
     private Usuario usuarioLogado;
@@ -26,7 +26,7 @@ public class InterfaceAluno {
         this.usuarioBusiness = new UsuarioBusiness();
         this.exercicioBusiness = new ExercicioBusiness();
         this.planoTreinoBusiness = new PlanoTreinoBusiness();
-        //this.indicadorBiomedicoBusiness = new IndicadorBiomedicoBusiness();
+        this.indicadorBiomedicoBusiness = new IndicadorBiomedicoBusiness(usuarioBusiness, null);
         this.secaoTreinoBusiness = new SecaoTreinoBusiness();
         this.sc = new Scanner(System.in);
     }
@@ -598,13 +598,13 @@ public class InterfaceAluno {
 
     private void executarTreino(PlanoTreino plano) {
         System.out.println("\n=== EXECUTANDO TREINO: " + plano.getNomePlano() + " ===");
-
+    
         for (SecaoTreino secao : plano.getSecoes()) {
             System.out.println("\n--- INICIANDO SEÇÃO: " + secao.getNomeTreino() + " ---");
             for (ItemPlanoTreino item : secao.getItensPlano()) {
                 System.out.println("\n--- Exercício: " + item.getExercicio().getNome() + " ---");
                 System.out.println("Planejado: " + item.getSeries() + " séries x " + item.getRepeticoes() + " repetições com " + item.getCarga() + " kg");
-
+    
                 try {
                     System.out.print("Quantas séries você fez? ");
                     int seriesRealizadas = Integer.parseInt(sc.nextLine());
@@ -612,22 +612,16 @@ public class InterfaceAluno {
                     int repeticoesRealizadas = Integer.parseInt(sc.nextLine());
                     System.out.print("Qual carga você usou (kg)? ");
                     int cargaRealizada = Integer.parseInt(sc.nextLine());
-                    
-                    // A lógica de registrar a performance real seria aqui,
-                    // possivelmente chamando um método em SecaoTreinoBusiness que salva um histórico.
-                    // Por enquanto, vamos focar em atualizar o plano.
-
+    
                     boolean houveDiferenca = (item.getSeries() != seriesRealizadas) || (item.getRepeticoes() != repeticoesRealizadas) || (item.getCarga() != cargaRealizada);
-
+    
                     if (houveDiferenca) {
                         System.out.print("Performance diferente! Deseja atualizar o plano com os novos parâmetros? (s/n): ");
                         String resposta = sc.nextLine();
-
+    
                         if (resposta.equalsIgnoreCase("s")) {
-                            // O serviço de negócio é chamado para orquestrar a atualização.
-                            // A lógica de modificar o item já está dentro do SecaoTreinoBusiness (que chama o PlanoTreinoBusiness).
-                            // A UI não precisa modificar o item diretamente.
-                            secaoTreinoBusiness.registrarPerformance(usuarioLogado, plano, item, cargaRealizada, repeticoesRealizadas);
+                            // ALTERADO: A chamada agora passa o valor de 'seriesRealizadas'
+                            secaoTreinoBusiness.registrarPerformance(usuarioLogado, plano, item, cargaRealizada, repeticoesRealizadas, seriesRealizadas);
                         } else {
                             System.out.println("Plano mantido sem alterações.");
                         }
