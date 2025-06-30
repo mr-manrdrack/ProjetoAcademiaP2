@@ -414,11 +414,13 @@ public class InterfaceAluno {
     public void exercicios() {
         boolean voltar = false;
         while (!voltar) {
-            System.out.println("\n=== EXERCÍCIOS FÍSICOS ===");
-            System.out.println("1 - Listar exercícios");
-            System.out.println("2 - Cadastrar exercício");
-            System.out.println("3 - Visualizar detalhes do exercício");
-            System.out.println("4 - Voltar");
+            System.out.println("\n=== GERENCIAR EXERCÍCIOS ===");
+            System.out.println("1 - Listar todos os exercícios");
+            System.out.println("2 - Cadastrar novo exercício");
+            System.out.println("3 - Buscar exercício por nome");
+            System.out.println("4 - Atualizar exercício existente");
+            System.out.println("5 - Excluir exercício");
+            System.out.println("6 - Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
 
             try {
@@ -427,15 +429,21 @@ public class InterfaceAluno {
 
                 switch (opcao) {
                     case 1:
-                        listarExercicios();
+                        listarTodosExercicios();
                         break;
                     case 2:
-                        cadastrarExercicio();
+                        cadastrarNovoExercicio();
                         break;
                     case 3:
-                        visualizarDetalhesExercicio();
+                        buscarExercicioPorNome();
                         break;
                     case 4:
+                        atualizarExercicioExistente();
+                        break;
+                    case 5:
+                        excluirExercicio();
+                        break;
+                    case 6:
                         voltar = true;
                         break;
                     default:
@@ -448,7 +456,7 @@ public class InterfaceAluno {
         }
     }
 
-    private void listarExercicios() {
+    private void listarTodosExercicios() {
         System.out.println("\n=== LISTA DE EXERCÍCIOS ===");
 
         List<Exercicio> exercicios = exercicioBusiness.listarExercicios();
@@ -469,7 +477,7 @@ public class InterfaceAluno {
         }
     }
 
-    private void cadastrarExercicio() {
+    private void cadastrarNovoExercicio() {
         System.out.println("\n=== CADASTRAR EXERCÍCIO FÍSICO ===");
 
         try {
@@ -490,8 +498,8 @@ public class InterfaceAluno {
         }
     }
 
-    private void visualizarDetalhesExercicio() {
-        System.out.println("\n=== DETALHES DO EXERCÍCIO ===");
+    private void buscarExercicioPorNome() {
+        System.out.println("\n=== BUSQUE POR EXERCÍCIO ===");
 
         System.out.print("Digite o nome do exercício: ");
         String nome = sc.nextLine();
@@ -506,6 +514,76 @@ public class InterfaceAluno {
         } else {
             System.out.println("Exercício não encontrado.");
         }
+    }
+
+    private void atualizarExercicioExistente() {
+        System.out.println("\n=== ATUALIZAR EXERCÍCIO ===");
+
+        System.out.print("Digite o nome do exercício a ser atualizado: ");
+        String nome = sc.nextLine().trim();
+
+        if (nome.isEmpty()) {
+            System.out.println("Nome não pode ser vazio!");
+            return;
+        }
+
+        Exercicio exercicioExistente = exercicioBusiness.buscarExercicioPorNome(nome);
+
+        if (exercicioExistente == null) {
+            System.out.println("Exercício não encontrado: '" + nome + "'");
+            return;
+        }
+
+        System.out.println("\nDigite os novos dados (deixe vazio para manter o atual):");
+
+        System.out.print("Nova descrição: ");
+        String novaDescricao = sc.nextLine().trim();
+
+        System.out.print("Novo caminho do GIF: ");
+        String novoCaminhoGif = sc.nextLine().trim();
+
+        boolean houveMudanca = false;
+
+        if (!novaDescricao.isEmpty()) {
+            exercicioExistente.setDescricao(novaDescricao);
+            houveMudanca = true;
+        }
+
+        if (!novoCaminhoGif.isEmpty()) {
+            exercicioExistente.setCaminhoGif(novoCaminhoGif);
+            houveMudanca = true;
+        }
+
+        if (houveMudanca) {
+            exercicioBusiness.atualizarExercicio(exercicioExistente);
+        } else {
+            System.out.println("Nenhuma alteração foi feita.");
+        }
+    }
+
+    private void excluirExercicio() {
+        System.out.println("\n=== EXCLUIR EXERCÍCIO ===");
+
+        System.out.print("Digite o nome do exercício a ser excluído: ");
+        String nome = sc.nextLine().trim();
+
+        if (nome.isEmpty()) {
+            System.out.println("Nome não pode ser vazio.");
+            return;
+        }
+
+        Exercicio exercicio = exercicioBusiness.buscarExercicioPorNome(nome);
+
+        if (exercicio == null) {
+            System.out.println("Exercício não encontrado: " + nome);
+            return;
+        }
+
+        System.out.println("\nExercício encontrado:");
+        System.out.println("Nome: " + exercicio.getNome());
+        System.out.println("Descrição: " + exercicio.getDescricao());
+
+        exercicioBusiness.deletarExercicio(nome);
     }
 
     public void secaoTreino() {
