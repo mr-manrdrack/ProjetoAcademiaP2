@@ -14,48 +14,29 @@ public class SecaoTreino {
     }
 
     public SecaoTreino(String id, String nomeTreino, PlanoTreino planoTreino){
+        this(); // Chama o construtor padrão para inicializar a lista
         this.id = id;
         this.nomeTreino = nomeTreino;
         this.planoTreino = planoTreino;
-        this.itensPlano = new ArrayList<>();
     }
 
-    public String getId() {
-        return id;
-    }
+    // Getters e Setters...
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getNomeTreino() { return nomeTreino; }
+    public void setNomeTreino(String nomeTreino) { this.nomeTreino = nomeTreino; }
+    public PlanoTreino getPlanoTreino() { return planoTreino; }
+    public void setPlanoTreino(PlanoTreino planoTreino) { this.planoTreino = planoTreino; }
+    public List<ItemPlanoTreino> getItensPlano() { return itensPlano; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNomeTreino() {
-        return nomeTreino;
-    }
-
-    public void setNomeTreino(String nomeTreino) {
-        this.nomeTreino = nomeTreino;
-    }
-
-    public PlanoTreino getPlanoTreino() {
-        return planoTreino;
-    }
-
-    public void setPlanoTreino(PlanoTreino planoTreino) {
-        this.planoTreino = planoTreino;
-    }
-
-    public List<ItemPlanoTreino> getItensPlano() {
-        return itensPlano;
-    }
-
-    public void setItensSecao(List<ItemPlanoTreino> itensPlano) {
+    // ALTERADO: Nome do método corrigido para consistência
+    public void setItensPlano(List<ItemPlanoTreino> itensPlano) {
         this.itensPlano = itensPlano;
     }
 
     public void addItemSecao(ItemPlanoTreino item) {
-        if (this.itensPlano == null) {
-            this.itensPlano = new ArrayList<>();
-        }
+        // ALTERADO: Verificação de nulidade removida por ser redundante,
+        // já que os construtores já inicializam a lista.
         this.itensPlano.add(item);
     }
 }

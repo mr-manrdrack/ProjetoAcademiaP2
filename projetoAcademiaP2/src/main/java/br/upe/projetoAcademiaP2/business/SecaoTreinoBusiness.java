@@ -35,7 +35,7 @@ public class SecaoTreinoBusiness {
             itemOriginal.setRepeticoes(repeticoesRealizadas);
 
             // Em seguida, passamos o USUÁRIO para que o business service possa salvá-lo.
-            planoTreinoBusiness.modificarPlanoDeTreino(usuario);
+            planoTreinoBusiness.modificarPlanoDeTreino(plano);
             System.out.println("Plano de treino atualizado para refletir a nova performance.");
 
         } else {

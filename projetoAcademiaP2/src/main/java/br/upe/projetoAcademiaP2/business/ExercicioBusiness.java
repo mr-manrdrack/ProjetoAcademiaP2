@@ -7,6 +7,7 @@ import java.util.List;
 
 public class ExercicioBusiness {
     private IExercicioRepository exercicioRepository;
+    private ExercicioBusiness exercicioBusiness;
 
     public ExercicioBusiness() {
         this.exercicioRepository = new ExercicioRepoImpl();

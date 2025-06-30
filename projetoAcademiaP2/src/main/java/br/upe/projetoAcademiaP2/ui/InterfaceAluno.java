@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class InterfaceAluno {
 
@@ -23,7 +24,7 @@ public class InterfaceAluno {
     public InterfaceAluno(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
         this.usuarioBusiness = new UsuarioBusiness();
-        //this.exercicioBusiness = new ExercicioBusiness();
+        this.exercicioBusiness = new ExercicioBusiness();
         this.planoTreinoBusiness = new PlanoTreinoBusiness();
         //this.indicadorBiomedicoBusiness = new IndicadorBiomedicoBusiness();
         this.secaoTreinoBusiness = new SecaoTreinoBusiness();
@@ -91,7 +92,10 @@ public class InterfaceAluno {
 
                 switch (opcao) {
                     case 1:
-                        visualizarPlanosTreino();
+                        PlanoTreino planoVisualizar = planoTreinoBusiness.carregarPlanoDoUsuario(usuarioLogado);
+                        if (planoVisualizar != null){
+                            planoTreinoBusiness.exibirPlanoDeTreino(planoVisualizar);
+                        }
                         break;
                     case 2:
                         cadastrarPlanoTreino();
@@ -108,32 +112,6 @@ public class InterfaceAluno {
             } catch (InputMismatchException e) {
                 System.out.println("Erro: Entrada inválida. Por favor, digite um número.");
                 sc.nextLine();
-            }
-        }
-    }
-
-    private void visualizarPlanosTreino() {
-        System.out.println("\n=== SEUS PLANOS DE TREINO ===");
-
-        List<PlanoTreino> planos = planoTreinoBusiness.visualizarPlanosDeTreino(usuarioLogado);
-
-        if (planos.isEmpty()) {
-            System.out.println("Você ainda não possui planos de treino cadastrados.");
-            return;
-        }
-
-        for (int i = 0; i < planos.size(); i++) {
-            PlanoTreino plano = planos.get(i);
-            System.out.println("\n" + (i + 1) + ". " + plano.getNomePlano());
-            System.out.println("Início: " + plano.getInicioPlano());
-            System.out.println("Fim: " + plano.getFimPlano());
-            System.out.println("Exercícios: " + plano.getItens().size());
-
-            if (!plano.getItens().isEmpty()) {
-                System.out.println("Detalhes dos exercícios:");
-                for (ItemPlanoTreino item : plano.getItens()) {
-                    System.out.println("     - " + item.getExercicio().getNome() + " (" + item.getSeries() + " séries x " + item.getRepeticoes() + " reps, " + item.getCarga() + "kg)");
-                }
             }
         }
     }
@@ -169,124 +147,85 @@ public class InterfaceAluno {
     }
 
     private void coletarExerciciosParaPlano(PlanoTreino plano) {
-        System.out.println("\n=== ADICIONAR EXERCÍCIOS AO PLANO ===");
         boolean continuar = true;
-
         while (continuar) {
-            try {
-                System.out.print("Nome do exercício: ");
-                String nomeExercicio = sc.nextLine();
+            System.out.print("\nNome da Seção (ex: Treino A - Peito e Tríceps): ");
+            String nomeSecao = sc.nextLine();
+            SecaoTreino secao = plano.getOuCriarSecao(nomeSecao);
 
-                System.out.print("Descrição do exercício: ");
-                String descricao = sc.nextLine();
+            System.out.print("Nome do exercício a adicionar nesta seção: ");
+            String nomeExercicio = sc.nextLine();
 
-                System.out.print("Caminho do GIF (opcional): ");
-                String caminhoGif = sc.nextLine();
+            // CORRIGIDO: Busca o exercício no repositório para garantir que ele existe
+            Exercicio exercicio = exercicioBusiness.buscarExercicioPorNome(nomeExercicio);
 
-                System.out.print("Número de séries: ");
-                int series = sc.nextInt();
+            if (exercicio == null) {
+                System.out.println("Exercício não encontrado! Cadastre-o primeiro no menu de exercícios.");
+            } else {
+                try {
+                    System.out.print("Número de séries: ");
+                    int series = Integer.parseInt(sc.nextLine());
+                    System.out.print("Número de repetições: ");
+                    int repeticoes = Integer.parseInt(sc.nextLine());
+                    System.out.print("Carga (kg): ");
+                    int carga = Integer.parseInt(sc.nextLine());
 
-                System.out.print("Número de repetições: ");
-                int repeticoes = sc.nextInt();
+                    ItemPlanoTreino item = new ItemPlanoTreino(exercicio, series, repeticoes, carga);
+                    secao.addItemSecao(item); // Adiciona o item à seção correta
+                    System.out.println("'" + nomeExercicio + "' adicionado à seção '" + nomeSecao + "'.");
 
-                System.out.print("Carga (kg): ");
-                int carga = sc.nextInt();
-                sc.nextLine();
-
-                Exercicio exercicio = new Exercicio(nomeExercicio, descricao, caminhoGif);
-                ItemPlanoTreino item = new ItemPlanoTreino(exercicio, series, repeticoes, carga);
-
-                plano.adicionarItem(item);
-
-                System.out.print("Deseja adicionar outro exercício? (s/n): ");
-                String resposta = sc.nextLine();
-                continuar = resposta.equalsIgnoreCase("s");
-
-            } catch (InputMismatchException e) {
-                System.out.println("Erro: Digite valores numéricos válidos.");
-                sc.nextLine();
+                } catch (NumberFormatException e) {
+                    System.out.println("Erro: Digite valores numéricos válidos para séries, repetições e carga.");
+                }
             }
+            System.out.print("Deseja adicionar outro exercício a este plano? (s/n): ");
+            continuar = sc.nextLine().equalsIgnoreCase("s");
         }
     }
 
     private void modificarPlanoTreino() {
         System.out.println("\n=== MODIFICAR PLANO DE TREINO ===");
 
-        List<PlanoTreino> planos = planoTreinoBusiness.visualizarPlanosDeTreino(usuarioLogado);
+        // 1. Carrega o plano do usuário
+        PlanoTreino plano = planoTreinoBusiness.carregarPlanoDoUsuario(usuarioLogado);
 
-        if (planos.isEmpty()) {
-            System.out.println("Você não possui planos de treino para modificar.");
+        if (plano == null) { // A verificação se o plano existe de fato deve ser feita aqui
+            System.out.println("Você não possui um plano de treino para modificar.");
             return;
         }
 
-        System.out.println("Selecione o plano para modificar:");
-        for (int i = 0; i < planos.size(); i++) {
-            System.out.println((i + 1) + ". " + planos.get(i).getNomePlano());
-        }
-
-        try {
-            System.out.print("Escolha o plano (número): ");
-            int escolha = sc.nextInt() - 1;
-            sc.nextLine();
-
-            if (escolha >= 0 && escolha < planos.size()) {
-                PlanoTreino planoSelecionado = planos.get(escolha);
-
-                modificarDadosDoPlano(planoSelecionado);
-
-                planoTreinoBusiness.modificarPlanoDeTreino(usuarioLogado);
-
-            } else {
-                System.out.println("Opção inválida!");
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Erro: Digite um número válido.");
-            sc.nextLine();
-        }
-    }
-
-    private void modificarDadosDoPlano(PlanoTreino plano) {
-        boolean continuar = true;
-
-        while (continuar) {
-            System.out.println("\n=== MODIFICAR: " + plano.getNomePlano() + " ===");
+        boolean finalizar = false;
+        while (!finalizar) {
+            System.out.println("\n--- Modificando Plano: " + plano.getNomePlano() + " ---");
+            planoTreinoBusiness.exibirPlanoDeTreino(plano); // Mostra o estado atual do plano
+            System.out.println("\nOpções de Modificação:");
             System.out.println("1 - Alterar nome do plano");
             System.out.println("2 - Alterar datas");
-            System.out.println("3 - Adicionar exercício");
+            System.out.println("3 - Adicionar exercício a uma seção");
             System.out.println("4 - Modificar exercício existente");
-            System.out.println("5 - Remover exercício");
-            System.out.println("6 - Finalizar modificações");
+            System.out.println("5 - Remover exercício de uma seção");
+            System.out.println("6 - Salvar e Finalizar modificações");
             System.out.print("Escolha uma opção: ");
 
             try {
-                int opcao = sc.nextInt();
-                sc.nextLine();
+                int opcao = Integer.parseInt(sc.nextLine());
 
                 switch (opcao) {
-                    case 1:
-                        alterarNomePlano(plano);
-                        break;
-                    case 2:
-                        alterarDatasPlano(plano);
-                        break;
-                    case 3:
-                        adicionarExercicioAoPlano(plano);
-                        break;
-                    case 4:
-                        modificarExercicioExistente(plano);
-                        break;
-                    case 5:
-                        removerExercicioDoPlano(plano);
-                        break;
+                    case 1: alterarNomePlano(plano); break;
+                    case 2: alterarDatasPlano(plano); break;
+                    case 3: adicionarExercicioAoPlano(plano); break;
+                    case 4: modificarExercicioExistente(plano); break;
+                    case 5: removerExercicioDoPlano(plano); break;
                     case 6:
-                        continuar = false;
+                        // 3. Salva o plano modificado e encerra o loop
+                        planoTreinoBusiness.modificarPlanoDeTreino(plano);
+                        finalizar = true;
                         break;
                     default:
                         System.out.println("Opção inválida!");
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Erro: Digite um número válido.");
-                sc.nextLine();
             }
         }
     }
@@ -675,57 +614,47 @@ public class InterfaceAluno {
     private void executarTreino(PlanoTreino plano) {
         System.out.println("\n=== EXECUTANDO TREINO: " + plano.getNomePlano() + " ===");
 
-        for (ItemPlanoTreino item : plano.getItens()) {
-            System.out.println("\n--- Exercício: " + item.getExercicio().getNome() + " ---");
-            System.out.println("Descrição: " + item.getExercicio().getDescricao());
-            System.out.println("Planejado: " + item.getSeries() + " séries x " + item.getRepeticoes() + " repetições com " + item.getCarga() + " kg");
+        for (SecaoTreino secao : plano.getSecoes()) {
+            System.out.println("\n--- INICIANDO SEÇÃO: " + secao.getNomeTreino() + " ---");
+            for (ItemPlanoTreino item : secao.getItensPlano()) {
+                System.out.println("\n--- Exercício: " + item.getExercicio().getNome() + " ---");
+                System.out.println("Planejado: " + item.getSeries() + " séries x " + item.getRepeticoes() + " repetições com " + item.getCarga() + " kg");
 
-            try {
-                System.out.print("Quantas séries você fez? ");
-                int seriesRealizadas = sc.nextInt();
+                try {
+                    System.out.print("Quantas séries você fez? ");
+                    int seriesRealizadas = Integer.parseInt(sc.nextLine());
+                    System.out.print("Quantas repetições por série? ");
+                    int repeticoesRealizadas = Integer.parseInt(sc.nextLine());
+                    System.out.print("Qual carga você usou (kg)? ");
+                    int cargaRealizada = Integer.parseInt(sc.nextLine());
+                    
+                    // A lógica de registrar a performance real seria aqui,
+                    // possivelmente chamando um método em SecaoTreinoBusiness que salva um histórico.
+                    // Por enquanto, vamos focar em atualizar o plano.
 
-                System.out.print("Quantas repetições por série? ");
-                int repeticoesRealizadas = sc.nextInt();
+                    boolean houveDiferenca = (item.getSeries() != seriesRealizadas) || (item.getRepeticoes() != repeticoesRealizadas) || (item.getCarga() != cargaRealizada);
 
-                System.out.print("Qual carga você usou (kg)? ");
-                int cargaRealizada = sc.nextInt();
-                sc.nextLine();
+                    if (houveDiferenca) {
+                        System.out.print("Performance diferente! Deseja atualizar o plano com os novos parâmetros? (s/n): ");
+                        String resposta = sc.nextLine();
 
-                boolean houveDiferenca = (item.getSeries() != seriesRealizadas) || (item.getRepeticoes() != repeticoesRealizadas) || (item.getCarga() != cargaRealizada);
-
-                if (houveDiferenca) {
-                    System.out.println("\nOs valores realizados são diferentes do planejado!");
-                    System.out.println("Planejado: " + item.getSeries() + "x" + item.getRepeticoes() + " com " + item.getCarga() + "kg");
-                    System.out.println("Realizado: " + seriesRealizadas + "x" + repeticoesRealizadas + " com " + cargaRealizada + "kg");
-
-                    System.out.print("Deseja atualizar o plano de treino com os novos parâmetros? (s/n): ");
-                    String resposta = sc.nextLine();
-
-                    if (resposta.equalsIgnoreCase("s")) {
-
-                        secaoTreinoBusiness.registrarPerformance(usuarioLogado, plano, item, cargaRealizada, repeticoesRealizadas);
-
-                        item.setSeries(seriesRealizadas);
+                        if (resposta.equalsIgnoreCase("s")) {
+                            // O serviço de negócio é chamado para orquestrar a atualização.
+                            // A lógica de modificar o item já está dentro do SecaoTreinoBusiness (que chama o PlanoTreinoBusiness).
+                            // A UI não precisa modificar o item diretamente.
+                            secaoTreinoBusiness.registrarPerformance(usuarioLogado, plano, item, cargaRealizada, repeticoesRealizadas);
+                        } else {
+                            System.out.println("Plano mantido sem alterações.");
+                        }
                     } else {
-                        System.out.println("Plano mantido sem alterações.");
+                        System.out.println("Performance conforme o planejado!");
                     }
-                } else {
-                    System.out.println("Performance conforme o planejado!");
+                } catch (NumberFormatException e) {
+                    System.out.println("Erro: Digite valores numéricos válidos.");
                 }
-
-            } catch (InputMismatchException e) {
-                System.out.println("Erro: Digite valores numéricos válidos.");
-                sc.nextLine();
             }
         }
-
         System.out.println("\nSeção de treino concluída!");
-
-        String idSecao = usuarioLogado.getEmail() + "_" + System.currentTimeMillis();
-        SecaoTreino secao = new SecaoTreino(idSecao, plano.getNomePlano(), plano);
-        secao.setItensSecao(plano.getItens());
-
-        System.out.println("Sessão registrada com ID: " + idSecao);
     }
 
     public void indicadoresBio() {
