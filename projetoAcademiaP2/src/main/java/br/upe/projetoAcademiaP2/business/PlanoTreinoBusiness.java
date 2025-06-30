@@ -47,10 +47,14 @@ public class PlanoTreinoBusiness {
         }
 
         PlanoTreino plano = planoRepository.carregarPlano(usuario);
-        plano.setUsuario(usuario);
+
+        if (plano != null) {
+            plano.setUsuario(usuario);
+        }
+        
+        // Retorna o plano encontrado, ou null se nenhum plano existir para este usuário.
         return plano;
     }
-
     /**
      * Atualiza apenas o plano salvo (sem alterar dados do usuário no CSV de usuários)
      */

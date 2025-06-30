@@ -527,34 +527,19 @@ public class InterfaceAluno {
 
     public void secaoTreino() {
         System.out.println("\n=== SEÇÃO DE TREINO ===");
-        PlanoTreino planoVisualizar = planoTreinoBusiness.carregarPlanoDoUsuario(usuarioLogado);
-        List<PlanoTreino> planos = planoTreinoBusiness.exibirPlanoDeTreino(usuarioLogado);
+        
+        // 1. Carrega o plano de treino do usuário logado.
+        // A lógica de negócio agora suporta apenas um plano, então não há mais lista.
+        PlanoTreino plano = planoTreinoBusiness.carregarPlanoDoUsuario(usuarioLogado);
 
-        if (planos.isEmpty()) {
-            System.out.println("Você precisa ter um plano de treino cadastrado para iniciar uma seção.");
+        // 2. Verifica se o usuário de fato tem um plano para treinar.
+        if (plano == null || plano.getSecoes().isEmpty()) {
+            System.out.println("Você precisa ter um plano de treino com exercícios cadastrados para iniciar uma seção.");
             return;
         }
 
-        System.out.println("Selecione o plano de treino para a seção:");
-        for (int i = 0; i < planos.size(); i++) {
-            System.out.println((i + 1) + ". " + planos.get(i).getNomePlano());
-        }
-
-        try {
-            System.out.print("Escolha o plano (número): ");
-            int escolha = sc.nextInt() - 1;
-            sc.nextLine();
-
-            if (escolha >= 0 && escolha < planos.size()) {
-                PlanoTreino planoSelecionado = planos.get(escolha);
-                iniciarSecaoTreino(planoSelecionado);
-            } else {
-                System.out.println("Opção inválida!");
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Erro: Digite um número válido.");
-            sc.nextLine();
-        }
+        // 3. Se o plano existe, inicia a seção de treino.
+        iniciarSecaoTreino(plano);
     }
 
     private void iniciarSecaoTreino(PlanoTreino plano) {
@@ -568,7 +553,6 @@ public class InterfaceAluno {
         System.out.print("Escolha uma opção: ");
 
         try {
-            Scanner sc = new Scanner(System.in);
             int opcao = sc.nextInt();
             sc.nextLine();
 
