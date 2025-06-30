@@ -1,21 +1,17 @@
 package br.upe.projetoAcademiaP2.ui;
 
-import br.upe.projetoAcademiaP2.business.UsuarioBusiness; // Única dependência de negócio necessária
+import br.upe.projetoAcademiaP2.business.UsuarioBusiness;
 import br.upe.projetoAcademiaP2.data.beans.Comum;
 import br.upe.projetoAcademiaP2.data.beans.Usuario;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-// ALTERADO: Removido o "extends InterfaceAluno". A classe agora é independente.
 public class InterfaceAdm {
 
-    // A classe agora tem suas próprias dependências.
     private UsuarioBusiness usuarioBusiness;
     private Scanner sc;
 
     public InterfaceAdm(Usuario Usuario) {
-        // Construtor inicializa suas próprias dependências.
         this.usuarioBusiness = new UsuarioBusiness();
         this.sc = new Scanner(System.in);
     }
@@ -30,7 +26,7 @@ public class InterfaceAdm {
 
             try {
                 int opcao = sc.nextInt();
-                sc.nextLine(); // Limpa o buffer
+                sc.nextLine();
 
                 switch (opcao) {
                     case 1:
@@ -69,7 +65,6 @@ public class InterfaceAdm {
                         cadastrarAluno();
                         break;
                     case 2:
-                        // Implementação de listar alunos
                         System.out.println("Funcionalidade não implementada.");
                         break;
                     case 3:
@@ -104,7 +99,6 @@ public class InterfaceAdm {
 
         Comum novoAluno = new Comum(nome, telefone, email, senha, null, null, null);
 
-        // Chama o método de negócio para realizar o cadastro.
         usuarioBusiness.cadastrarUsuario(novoAluno);
     }
 }
