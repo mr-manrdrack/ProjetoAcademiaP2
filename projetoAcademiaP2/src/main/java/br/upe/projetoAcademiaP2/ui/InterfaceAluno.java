@@ -13,9 +13,9 @@ import java.util.Scanner;
 public class InterfaceAluno {
 
     private UsuarioBusiness usuarioBusiness;
-    //private ExercicioBusiness exercicioBusiness;
+    private ExercicioBusiness exercicioBusiness;
     private PlanoTreinoBusiness planoTreinoBusiness;
-    //private IndicadorBiomedicoBusiness indicadorBiomedicoBusiness;
+    private IndicadorBioBusiness indicadorBiomedicoBusiness;
     private SecaoTreinoBusiness secaoTreinoBusiness;
     private Scanner sc;
     private Usuario usuarioLogado;
@@ -483,7 +483,7 @@ public class InterfaceAluno {
             String caminhoGif = sc.nextLine();
 
             Exercicio novoExercicio = new Exercicio(nome, descricao, caminhoGif);
-            exercicioBusiness.cadastrarExercicio(novoExercicio);
+            exercicioBusiness.salvar(novoExercicio);
 
         } catch (Exception e) {
             System.out.println("Erro ao cadastrar exercício: " + e.getMessage());

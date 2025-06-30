@@ -1,4 +1,5 @@
 package br.upe.projetoAcademiaP2.business;
+import br.upe.projetoAcademiaP2.data.beans.Exercicio;
 import br.upe.projetoAcademiaP2.repository.interfaces.IExercicioRepository;
 import java.util.List;
 
