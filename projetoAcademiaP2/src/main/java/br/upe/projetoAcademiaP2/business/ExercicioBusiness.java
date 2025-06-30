@@ -3,6 +3,8 @@ package br.upe.projetoAcademiaP2.business;
 import br.upe.projetoAcademiaP2.data.beans.Exercicio;
 import br.upe.projetoAcademiaP2.data.repository.ExercicioRepoImpl;
 import br.upe.projetoAcademiaP2.data.repository.interfaces.IExercicioRepository;
+
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class ExercicioBusiness {
@@ -42,29 +44,29 @@ public class ExercicioBusiness {
     }
 
     public void atualizarExercicio(Exercicio exercicio) {
-        if (exercicio == null || exercicio.getNome() == null) {
-            System.err.println("Exercício inválido para atualização.");
-            return;
-        }
-
-        Exercicio atualizado = exercicioRepository.update(exercicio);
-        if (atualizado != null) {
-            System.out.println("Exercício atualizado com sucesso!");
-        } else {
-            System.out.println("Exercício não encontrado para atualização.");
+        try {
+            if(exercicio == null){
+                throw new InputMismatchException();
+            }
+            exercicioRepository.update(exercicio);
+        } catch (InputMismatchException IME){
+            System.out.println("Algum campo acabou ficando em branco, tente novamente");
+        } catch (Exception e) {
+            System.out.println("Algo deu errado. Por favor, tente novamente");
         }
     }
 
     public void deletarExercicio(String nome) {
-        boolean deletado = exercicioRepository.delete(nome);
-        if (deletado) {
-            System.out.println("Exercício removido com sucesso!");
-        } else {
-            System.out.println("Exercício não encontrado para remoção.");
+        try{
+            if (nome.isEmpty() || nome.equals(" ")){
+                throw new InputMismatchException();
+            }
+            exercicioRepository.delete(nome);
+        }catch (InputMismatchException IME){
+            System.out.println("nome vazio, por favor escreva novamente");
         }
-    }
-
-    public void cadastrarExercicio(Exercicio exercicio) {
-        salvar(exercicio);
+        catch (Exception e) {
+            System.out.println("Algo deu errado. Por favor, tente novamente");
+        }
     }
 }
