@@ -1,27 +1,21 @@
 package br.upe.projetoAcademiaP2.ui;
 
-import br.upe.projetoAcademiaP2.data.beans.Usuario;
-
 import java.util.Scanner;
 
-public class InterfaceAdm {
+public class PlanosDeTreino {
     private final Scanner sc = new Scanner(System.in);
-    private final Usuario adm;
 
-    public InterfaceAdm(Usuario adm) {
-        this.adm = adm;
-    }
-
-    public void exibirMenuAdm() {
+    public void exibirMenuPlanosDeTreino(){
         boolean sair = false;
+
         while (!sair){
             System.out.println("=".repeat(20));
-            System.out.println("MENU ADMINISTRADOR");
+            System.out.println("PLANO DE TREINO");
             System.out.println("=".repeat(20));
-            System.out.println("1 - Cadastrar alunos");
-            System.out.println("2 - Listar alunos");
-            System.out.println("3 - Modificar alunos");
-            System.out.println("4 - Excluir alunos");
+            System.out.println("1 - Cadastrar plano de treino");
+            System.out.println("2 - Listar plano de treino");
+            System.out.println("3 - Excluir plano de treino");
+            System.out.println("4 - Modificar plano de treino");
             System.out.println("5 - Sair");
             System.out.print("Escolha uma opção: ");
 
@@ -31,16 +25,16 @@ public class InterfaceAdm {
 
                 switch (opcao){
                     case 1:
-                        cadastrarAluno();
+                        cadastrarPlano();
                         break;
                     case 2:
-                        listarAlunos();
+                        listarPlano();
                         break;
                     case 3:
-                        modificarAluno();
+                        excluirPlano();
                         break;
                     case 4:
-                        excluirAluno();
+                        modificarPlano();
                         break;
                     case 5:
                         System.out.println("Saindo...");
@@ -56,22 +50,15 @@ public class InterfaceAdm {
         }
     }
 
-    private void modificarAluno() {
+    private void modificarPlano() {
     }
 
-    private void cadastrarAluno() {
-        System.out.println("\n--- Cadastro de Novo Usuário ---");
-        System.out.print("Nome: ");
-        String nome = sc.nextLine();
-        System.out.print("Login: ");
-        String login = sc.nextLine();
-        System.out.print("Senha: ");
-        String senha = sc.nextLine();
+    private void excluirPlano() {
     }
 
-    private void excluirAluno() {
+    private void listarPlano() {
     }
 
-    private void listarAlunos() {
+    private void cadastrarPlano() {
     }
 }
