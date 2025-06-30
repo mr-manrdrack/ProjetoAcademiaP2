@@ -4,7 +4,7 @@ import br.upe.projetoAcademiaP2.data.beans.Adm;
 import br.upe.projetoAcademiaP2.data.beans.Comum;
 import br.upe.projetoAcademiaP2.data.beans.Usuario;
 import br.upe.projetoAcademiaP2.data.repository.interfaces.IUsuarioRepository;
-import br.upe.projetoAcademiaP2.data.repository.UsuarioRepository;
+import br.upe.projetoAcademiaP2.data.repository.UsuarioCsvRepository;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class UsuarioBusiness {
     private IUsuarioRepository usuarioRepository;
 
     public UsuarioBusiness() {
-        this.usuarioRepository = new UsuarioRepository();
+        this.usuarioRepository = new UsuarioCsvRepository();
     }
 
     public String autenticar(String email, String senha) {
@@ -21,7 +21,7 @@ public class UsuarioBusiness {
         Usuario usuario = usuarioRepository.findByEmail(email);
 
         if (usuario != null && usuario.getSenha().equals(senha)) {
-            if (usuario instanceof Adm) { // ALTERADO: Corrigido para a classe Adm
+            if (usuario instanceof Adm) { 
                 return "ADM";
             } else if (usuario instanceof Comum) {
                 return "ALUNO";

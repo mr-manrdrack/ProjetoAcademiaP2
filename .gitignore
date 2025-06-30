@@ -44,3 +44,5 @@ out/
 
 .vscode/
 .code-workspace
+
+*.csv

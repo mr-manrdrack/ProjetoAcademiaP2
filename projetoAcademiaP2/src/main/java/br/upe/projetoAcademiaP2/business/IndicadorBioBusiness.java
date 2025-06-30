@@ -2,6 +2,7 @@ package br.upe.projetoAcademiaP2.business;
 import br.upe.projetoAcademiaP2.data.repository.interfaces.IIndBioRepository
 import java.util.ArrayList;
 
+
 public class IndicadorBioBusiness{
     private UsuarioBusiness usuarioBusiness;
     private IIndicadorBioRepository indBioRepository;
@@ -32,3 +33,4 @@ public class IndicadorBioBusiness{
 
     }
 }
+*/

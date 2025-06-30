@@ -2,6 +2,7 @@ package br.upe.projetoAcademiaP2.business;
 import br.upe.projetoAcademiaP2.repository.interfaces.IExercicioRepository;
 import java.util.List;
 
+
 public class ExercicioBusiness{
     private IExercicioRepository exercicioRepo;
 

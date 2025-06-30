@@ -7,7 +7,7 @@ public abstract class Usuario {
     private String nome;
     private String telefone;
     private String email;
-    private String senha; // ALTERADO: Campo senha adicionado
+    private String senha;
     private Double pesoAtual;
     private Double alturaAtual;
     private Double percGorduraAtual;
@@ -20,17 +20,17 @@ public abstract class Usuario {
         this.indicaBio = new ArrayList<>();
     }
 
-    // ALTERADO: Construtor atualizado para incluir a senha
-    public Usuario(String nome, String telefone, String email, String senha, Double pesoAtual, Double alturaAtual, Double percGorduraAtual){
-        this(); 
+    public Usuario(String nome, String telefone, String email, String senha, Double pesoAtual, Double alturaAtual, Double percGorduraAtual){ 
+        this();
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
-        this.senha = senha; // ALTERADO: Atribuição da senha
+        this.senha = senha;
         this.pesoAtual = pesoAtual;
         this.alturaAtual = alturaAtual;
         this.percGorduraAtual = percGorduraAtual;
     }
+    
     
     public void addPlanoTreino(PlanoTreino plano) {
         if (this.planTreinos == null) {
@@ -46,11 +46,8 @@ public abstract class Usuario {
     public void setTelefone(String telefone) { this.telefone = telefone; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-    
-    // NOVO: Getter e Setter para a senha
     public String getSenha() { return senha; }
     public void setSenha(String senha) { this.senha = senha; }
-    
     public Double getPesoAtual() { return pesoAtual; }
     public void setPesoAtual(Double pesoAtual) { this.pesoAtual = pesoAtual; }
     public Double getAlturaAtual() { return alturaAtual; }
