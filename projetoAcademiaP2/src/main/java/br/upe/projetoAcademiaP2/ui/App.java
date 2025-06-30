@@ -60,7 +60,7 @@ public class App {
                     InterfaceAdm interfaceAdm = new InterfaceAdm(usuarioLogado);
                     interfaceAdm.exibirMenu();
                     break;
-                case "ALUNO":
+                case "COMUM":
                     // ALTERADO: Passamos o objeto do aluno para o construtor
                     InterfaceAluno interfaceAluno = new InterfaceAluno(usuarioLogado);
                     interfaceAluno.exibirMenu();
