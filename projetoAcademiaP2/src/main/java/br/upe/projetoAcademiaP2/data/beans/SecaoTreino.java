@@ -9,15 +9,13 @@ public class SecaoTreino {
     private PlanoTreino planoTreino;
     private List<ItemPlanoTreino> itensPlano;
 
-    public SecaoTreino(){
-        this.itensPlano = new ArrayList<>();
-    }
+
 
     public SecaoTreino(String id, String nomeTreino, PlanoTreino planoTreino){
-        this(); // Chama o construtor padrão para inicializar a lista
         this.id = id;
         this.nomeTreino = nomeTreino;
         this.planoTreino = planoTreino;
+        this.itensPlano = new ArrayList<>();
     }
 
     // Getters e Setters...

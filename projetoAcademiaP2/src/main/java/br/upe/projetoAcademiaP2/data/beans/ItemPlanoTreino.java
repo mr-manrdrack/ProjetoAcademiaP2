@@ -7,8 +7,7 @@ public class ItemPlanoTreino {
     private int repeticoes;
     private int carga;
 
-    public ItemPlanoTreino() {
-    }
+
 
     public ItemPlanoTreino(Exercicio exercicio, int series, int repeticoes, int carga) {
         this.exercicio = exercicio;

@@ -6,8 +6,6 @@ public class Exercicio {
     private String descricao;
     private String caminhoGif;
 
-    public Exercicio() {
-    }
 
     public Exercicio(String nome, String descricao, String caminhoGif) {
         this.nome = nome;

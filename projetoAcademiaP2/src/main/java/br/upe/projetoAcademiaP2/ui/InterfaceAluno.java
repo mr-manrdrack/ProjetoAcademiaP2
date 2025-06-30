@@ -527,8 +527,8 @@ public class InterfaceAluno {
 
     public void secaoTreino() {
         System.out.println("\n=== SEÇÃO DE TREINO ===");
-
-        List<PlanoTreino> planos = planoTreinoBusiness.visualizarPlanosDeTreino(usuarioLogado);
+        PlanoTreino planoVisualizar = planoTreinoBusiness.carregarPlanoDoUsuario(usuarioLogado);
+        List<PlanoTreino> planos = planoTreinoBusiness.exibirPlanoDeTreino(usuarioLogado);
 
         if (planos.isEmpty()) {
             System.out.println("Você precisa ter um plano de treino cadastrado para iniciar uma seção.");
@@ -568,6 +568,7 @@ public class InterfaceAluno {
         System.out.print("Escolha uma opção: ");
 
         try {
+            Scanner sc = new Scanner(System.in);
             int opcao = sc.nextInt();
             sc.nextLine();
 

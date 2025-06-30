@@ -8,12 +8,9 @@ public class IndicadorBiomedico {
    private Double percentualMassaMagra;
    private Double imc;
 
-   public IndicadorBiomedico(){
 
-   }
-
-    public IndicadorBiomedico(String id, Double peso, Double altura, Double percentualGordura, Double percentualMassaMagra, Double imc) {
-        this.id = id;
+    public IndicadorBiomedico(String email, Double peso, Double altura, Double percentualGordura, Double percentualMassaMagra, Double imc) {
+        this.id = email;
         this.peso = peso;
         this.altura = altura;
         this.percentualGordura = percentualGordura;

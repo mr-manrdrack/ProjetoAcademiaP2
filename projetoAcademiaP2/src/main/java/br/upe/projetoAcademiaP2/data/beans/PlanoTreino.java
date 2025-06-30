@@ -17,17 +17,14 @@ public class PlanoTreino {
 
     private List<SecaoTreino> secoes;
 
-    public PlanoTreino() {
-        this.secoes = new ArrayList<>();
-    }
 
     public PlanoTreino(int id, String nomePlano, Date inicioPlano, Date fimPlano, Usuario usuario) {
-        this(); // Chama o construtor padrão para inicializar a lista de seções
         this.id = id;
         this.nomePlano = nomePlano;
         this.inicioPlano = inicioPlano;
         this.fimPlano = fimPlano;
         this.usuario = usuario;
+        this.secoes = new ArrayList<>();
     }
 
     // --- MÉTODO CORRIGIDO ---
