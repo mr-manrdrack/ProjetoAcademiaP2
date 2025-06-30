@@ -28,8 +28,32 @@ public class IndicadorBioBusiness{
         return resultado;
     }
 
-    public void importarIndicadoresDeCSV(String caminhoArquivo){
+    public boolean importarIndicadoresDeCSV(String caminhoArquivo){
+        try {
+            CSVManipBusiness fileManip = new CSVManipBusiness();
+            ArrayList<String> arquivoParaImportar = fileManip.leitor(caminhoArquivo);
+            for (String s : arquivoParaImportar) {
+                System.out.println(s + "\n");
+            }
+            for(int index = 0; index < arquivoParaImportar.size(); index++){
 
+                String linha = arquivoParaImportar.get(index);
+                String[] informacoesSeparadas = linha.split(";");
+                String id = informacoesSeparadas[0];
+                Double peso = Double.parseDouble(informacoesSeparadas[1]);
+                Double altura = Double.parseDouble(informacoesSeparadas[2]);
+                Double percentualGordura = Double.parseDouble(informacoesSeparadas[3]);
+                Double percentualMassaMagra = Double.parseDouble(informacoesSeparadas[4]);
+                Double imc = Double.parseDouble(informacoesSeparadas[5]);
+                IndicadorBiomedico indicadorImportado = new IndicadorBiomedico(id,peso,altura,percentualGordura,percentualMassaMagra,imc);
+                indBioRepository.save(indicadorImportado);
+                System.out.println("\nInformações importadas");
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("\nAlgo deu errado. Por favor, tente novamente");
+        }
+        return false;
     }
 
     public void exportarRelatorioEvolucao(Usuario U, Date inicio,Date fim){
