@@ -1,7 +1,6 @@
 package br.upe.projetoAcademiaP2.ui;
 
 import java.util.Scanner;
-
 import br.upe.projetoAcademiaP2.business.UsuarioBusiness;
 import br.upe.projetoAcademiaP2.data.beans.Usuario;
 import br.upe.projetoAcademiaP2.data.repository.UsuarioCsvRepository;
@@ -44,7 +43,6 @@ public class App {
         String tipoUsuario = usuarioBusiness.autenticar(email, senha);
 
         if (tipoUsuario != null) {
-            // ALTERADO: Buscamos o objeto do usuário que acabou de logar
             Usuario usuarioLogado = usuarioCsvRepository.findByEmail(email);
             
             if (usuarioLogado == null) {
@@ -56,7 +54,6 @@ public class App {
 
             switch (tipoUsuario) {
                 case "ADM":
-                    // ALTERADO: Passamos o objeto do admin para o construtor
                     InterfaceAdm interfaceAdm = new InterfaceAdm(usuarioLogado);
                     interfaceAdm.exibirMenu();
                     break;
