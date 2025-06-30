@@ -18,7 +18,6 @@ public class UsuarioCsvRepository implements IUsuarioRepository {
     public UsuarioCsvRepository() {
         this.filePath = obterCaminhoCsv();
         criarDiretorioSeNecessario(); // Garante que a pasta "data/" exista
-        System.out.println(" CAMINHO DO CSV: " + this.filePath);
         this.usuarios = new ArrayList<>();
         carregarDoCsv();
     }
@@ -152,7 +151,7 @@ public class UsuarioCsvRepository implements IUsuarioRepository {
                 if (dados.length > 7 && !dados[7].isEmpty()) usuario.setPercGorduraAtual(Double.parseDouble(dados[7]));
 
                 this.usuarios.add(usuario);
-                System.out.println(" Usuário carregado: " + usuario.getEmail());
+                
             }
         } catch (IOException e) {
             System.err.println(" Erro ao carregar CSV: " + e.getMessage());

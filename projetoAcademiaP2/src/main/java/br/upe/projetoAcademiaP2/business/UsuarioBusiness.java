@@ -6,6 +6,7 @@ import br.upe.projetoAcademiaP2.data.beans.Usuario;
 import br.upe.projetoAcademiaP2.data.repository.interfaces.IUsuarioRepository;
 import br.upe.projetoAcademiaP2.data.repository.UsuarioCsvRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioBusiness {
@@ -24,7 +25,7 @@ public class UsuarioBusiness {
             if (usuario instanceof Adm) { 
                 return "ADM";
             } else if (usuario instanceof Comum) {
-                return "ALUNO";
+                return "COMUM";
             }
         }
         return null; 
@@ -39,6 +40,16 @@ public class UsuarioBusiness {
     public List<Usuario> listarUsuarios() {
         // ALTERADO: Chamando o método 'listarTodos' que agora existe
         return usuarioRepository.listarTodos();
+    }
+
+    public List<Comum> listarUsuariosComuns() {
+        List<Comum> comuns = new ArrayList<>();
+        for (Usuario u : usuarioRepository.listarTodos()) {
+            if (u instanceof Comum) {
+                comuns.add((Comum) u);
+            }
+        }
+        return comuns;
     }
 
     public void deletarUsuario(String email) {
