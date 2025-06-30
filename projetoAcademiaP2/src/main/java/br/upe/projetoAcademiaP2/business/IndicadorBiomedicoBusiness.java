@@ -4,30 +4,40 @@ import br.upe.projetoAcademiaP2.data.beans.Usuario;
 import br.upe.projetoAcademiaP2.data.repository.interfaces.IIndBioRepository;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
-public class IndicadorBioBusiness{
+public class IndicadorBiomedicoBusiness {
     private UsuarioBusiness usuarioBusiness;
     private IIndBioRepository indBioRepository;
     private CSVManipBusiness fileManip = new CSVManipBusiness();
 
-    public IndicadorBioBusiness(UsuarioBusiness UB, IIndBioRepository IBR){
+    public IndicadorBiomedicoBusiness(UsuarioBusiness UB, IIndBioRepository IBR){
         this.usuarioBusiness = UB;
         this.indBioRepository = IBR;
     }
 
-    public IndicadorBiomedico registrarIndicador(Usuario U, IndicadorBiomedico IB){
-        return indBioRepository.save(IB);
+    public void cadastrarIndicador(Usuario usuario, IndicadorBiomedico indicador){
+        if(usuario != null && indicador != null){
+            indBioRepository.save(indicador);
+        }
     }
 
-    public ArrayList<IndicadorBiomedico> consultarHistorico(Usuario U){
-        ArrayList<IndicadorBiomedico> resultado = new ArrayList<IndicadorBiomedico>();
-        for(int index = 0; index < indBioRepository.findAll().size(); index++){
-            if(indBioRepository.findAll().get(index).getId().equals(U.getNome()))
-                resultado.add(indBioRepository.findAll().get(index));
+    public ArrayList<IndicadorBiomedico> listarIndicadores(Usuario usuario){
+        try {
+            ArrayList<IndicadorBiomedico> resultado = new ArrayList<IndicadorBiomedico>();
+            for (int index = 0; index < indBioRepository.findAll().size(); index++) {
+                if(indBioRepository.findAll().get(index).getId().equals(usuario.getEmail())){
+                    resultado.add(indBioRepository.findAll().get(index));
+                }
+            }
+            return resultado;
+        } catch (Exception e) {
+            return null;
         }
-        return resultado;
+    }
+
+    public void atualizarIndicador(IndicadorBiomedico indicador){
+        indBioRepository.update(indicador);
     }
 
     public boolean importarIndicadoresDeCSV(String caminhoArquivo){

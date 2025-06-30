@@ -29,6 +29,11 @@ public abstract class Usuario {
     }
     
     
+    public Usuario() {
+        
+    }
+
+
     public void addPlanoTreino(PlanoTreino plano) {
         if (this.planTreinos == null) {
             this.planTreinos = new ArrayList<>();
