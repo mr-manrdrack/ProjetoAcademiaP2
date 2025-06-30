@@ -3,7 +3,7 @@ package br.upe.projetoAcademiaP2.business;
 import br.upe.projetoAcademiaP2.data.beans.PlanoTreino;
 import br.upe.projetoAcademiaP2.data.beans.Usuario;
 import br.upe.projetoAcademiaP2.data.repository.interfaces.IUsuarioRepository;
-import br.upe.projetoAcademiaP2.data.repository.UsuarioRepository; 
+import br.upe.projetoAcademiaP2.data.repository.UsuarioCsvRepository; 
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class PlanoTreinoBusiness {
 
     public PlanoTreinoBusiness() {
         
-        this.usuarioRepository = new UsuarioRepository();
+        this.usuarioRepository = new UsuarioCsvRepository();
     }
 
     
