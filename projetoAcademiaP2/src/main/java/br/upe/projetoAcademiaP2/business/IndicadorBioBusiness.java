@@ -4,11 +4,13 @@ import br.upe.projetoAcademiaP2.data.beans.Usuario;
 import br.upe.projetoAcademiaP2.data.repository.interfaces.IIndBioRepository;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class IndicadorBioBusiness{
     private UsuarioBusiness usuarioBusiness;
     private IIndBioRepository indBioRepository;
+    private CSVManipBusiness fileManip = new CSVManipBusiness();
 
     public IndicadorBioBusiness(UsuarioBusiness UB, IIndBioRepository IBR){
         this.usuarioBusiness = UB;
@@ -30,7 +32,6 @@ public class IndicadorBioBusiness{
 
     public boolean importarIndicadoresDeCSV(String caminhoArquivo){
         try {
-            CSVManipBusiness fileManip = new CSVManipBusiness();
             ArrayList<String> arquivoParaImportar = fileManip.leitor(caminhoArquivo);
             for (String s : arquivoParaImportar) {
                 System.out.println(s + "\n");
@@ -56,7 +57,37 @@ public class IndicadorBioBusiness{
         return false;
     }
 
-    public void exportarRelatorioEvolucao(Usuario U, Date inicio,Date fim){
+    public boolean exportarRelatorioEvolucao(Usuario U, Date inicio,Date fim){
+        try{
+            String nome = U.getNome();
+            String email = U.getEmail();
+            ArrayList<String> stringParaExportacao = new ArrayList<String>();
+            ArrayList<String> separado = new ArrayList<String>();
+            for(int index = 0; index < indBioRepository.findAll().size(); index++){
+                if(indBioRepository.findAll().get(index).getId().equals(email)){
+                    separado.add(String.valueOf(indBioRepository.findAll().get(index).getPercentualGordura()));
+                    separado.add(String.valueOf(indBioRepository.findAll().get(index).getPercentualMassaMagra()));
+                    separado.add(String.valueOf(indBioRepository.findAll().get(index).getImc()));
+                    separado.add(String.valueOf(inicio));
+                    separado.add(String.valueOf(fim));
+                }
+            }
+            for(int index = 0; index < separado.size(); index += 5){
+                stringParaExportacao.add(separado.get(index) +","+ separado.get(index+1) +","+ separado.get(index+2) +","+ separado.get(index+3) +","+ separado.get(index+4));
+            }
+            ArrayList<String> nomeDosCampos = new ArrayList<String>();
+            nomeDosCampos.add("Percentual de gordura");
+            nomeDosCampos.add("Percentual de massa magra");
+            nomeDosCampos.add("IMC");
+            nomeDosCampos.add("Data de início");
+            nomeDosCampos.add("Data de fim");
 
+            fileManip.escritor(nomeDosCampos,stringParaExportacao,"RelatorioDeEvolucao.CSV","src/main/java/br/upe/projetoAcademiaP2/exported");
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("\nAlgo deu errado. Por favor, tente novamente");
+        }
+        return false;
     }
 }

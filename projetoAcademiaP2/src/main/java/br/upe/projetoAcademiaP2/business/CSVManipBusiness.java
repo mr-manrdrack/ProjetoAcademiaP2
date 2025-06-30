@@ -1,4 +1,5 @@
 package br.upe.projetoAcademiaP2.business;
+import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -26,24 +27,33 @@ public class CSVManipBusiness {
         }
         return resposta;
     }
-//    public void escritor(ArrayList<String> input, String nomeDoArquivo){
-//        String directoryPath = "src/main/java/org/org.example/Analise";
-//        String filePath = directoryPath + "/" + nomeDoArquivo;
-//
-//        try {
-//            File directory = new File(directoryPath);
-//            if (!directory.exists()) {
-//                directory.mkdirs();
-//            }
-//            FileWriter writer = new FileWriter(filePath, StandardCharsets.UTF_8,true);
-//
-//            for (String s : input) {
-//                writer.write(s + "\n");
-//            }
-//            writer.flush();
-//            writer.close();
-//        }catch (IOException IOE){
-//            IOE.printStackTrace();
-//        }
-//    }
+    public void escritor(ArrayList<String> nomeDosCampos, ArrayList<String> input, String nomeDoArquivo, String caminhoDoArquivo){
+        String caminhoAbsoluto = caminhoDoArquivo + "/" + nomeDoArquivo;
+
+        try {
+            File directory = new File(caminhoAbsoluto);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            FileWriter writer = new FileWriter(caminhoAbsoluto, StandardCharsets.UTF_8,true);
+
+            for (int index = 0; index < input.size(); index++) {
+                if(index == 0){
+                    for(int ind = 0; ind < nomeDosCampos.size();ind++){
+                        writer.write(nomeDosCampos.get(ind));
+                        if(ind != nomeDosCampos.size()-1){
+                            writer.write(",");
+                        }
+                        writer.write("\n");
+                    }
+                }else {
+                    writer.write(input.get(index) + "\n");
+                }
+            }
+            writer.flush();
+            writer.close();
+        }catch (IOException IOE){
+            IOE.printStackTrace();
+        }
+    }
 }
