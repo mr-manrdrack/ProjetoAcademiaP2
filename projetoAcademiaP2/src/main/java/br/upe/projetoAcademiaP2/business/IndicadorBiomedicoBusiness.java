@@ -33,9 +33,6 @@ public class IndicadorBiomedicoBusiness {
         }
     }
 
-    public void atualizarIndicador(IndicadorBiomedico informacaoVelha, IndicadorBiomedico informacaoNova){
-        indBioRepository.update(informacaoVelha, informacaoNova);
-    }
     public boolean importarIndicadoresDeCSV(Usuario usuario,String caminhoArquivo){
         try {
             ArrayList<String> arquivoParaImportar = fileManip.leitor(caminhoArquivo);

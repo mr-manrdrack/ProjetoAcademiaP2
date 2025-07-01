@@ -22,9 +22,8 @@ public class InterfaceBiomedico { //NAO ESTÁ CADASTRANDO
             System.out.println("\n=== INDICADORES BIOMÉDICOS ===");
             System.out.println("1 - Cadastrar indicadores");
             System.out.println("2 - Listar indicadores");
-            System.out.println("3 - Modificar indicadores");
-            System.out.println("4 - Importar indicadores (CSV)");
-            System.out.println("5 - Voltar");
+            System.out.println("3 - Importar indicadores (CSV)");
+            System.out.println("4 - voltar");
             System.out.print("Escolha uma opção: ");
 
             try {
@@ -39,12 +38,9 @@ public class InterfaceBiomedico { //NAO ESTÁ CADASTRANDO
                         listarIndicadores();
                         break;
                     case 3:
-                        modificarIndicadores();
-                        break;
-                    case 4:
                         importarIndicadoresCSV();
                         break;
-                    case 5:
+                    case 4:
                         voltar = true;
                         break;
                     default:
@@ -107,39 +103,6 @@ public class InterfaceBiomedico { //NAO ESTÁ CADASTRANDO
             System.out.println("Gordura: " + ind.getPercentualGordura() + "%");
             System.out.println("Massa Magra: " + ind.getPercentualMassaMagra() + "%");
             System.out.println("-".repeat(60));
-        }
-    }
-
-    private void modificarIndicadores() {
-        System.out.println("\n=== MODIFICAR INDICADORES BIOMÉDICOS ===");
-
-        List<IndicadorBiomedico> indicadores = indicadorBiomedicoBusiness.listarIndicadores(usuarioLogado);
-
-        if (indicadores.isEmpty()) {
-            System.out.println("Nenhum indicador para modificar.");
-            return;
-        }
-
-        System.out.println("Selecione o indicador para modificar:");
-        for (int i = 0; i < indicadores.size(); i++) {
-            IndicadorBiomedico ind = indicadores.get(i);
-            System.out.println((i + 1) + ". ID: " + ind.getId() + " - Peso: " + ind.getPeso() + "kg, IMC: " + String.format("%.2f", ind.getImc()));
-        }
-
-        try {
-            System.out.print("Escolha o indicador (número): ");
-            int escolha = sc.nextInt() - 1;
-            sc.nextLine();
-
-            if (escolha >= 0 && escolha < indicadores.size()) {
-                IndicadorBiomedico indicadorSelecionado = indicadores.get(escolha);
-                indicadorBiomedicoBusiness.atualizarIndicador(indicadorSelecionado);
-            } else {
-                System.out.println("Opção inválida!");
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Erro: Digite um número válido.");
-            sc.nextLine();
         }
     }
 
