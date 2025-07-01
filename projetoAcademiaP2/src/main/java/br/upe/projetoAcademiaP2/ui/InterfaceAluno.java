@@ -9,12 +9,13 @@ public class InterfaceAluno {
     private final Usuario aluno;
     private Exercicios exercicios = new Exercicios();
     private InterfaceBiomedico indicadores = new InterfaceBiomedico();
-    private PlanosDeTreino planoTreino = new PlanosDeTreino();
+    private PlanosDeTreino planoTreino;
     private Relatorios relatorios = new Relatorios();
 
 
     public InterfaceAluno(Usuario aluno) {
         this.aluno = aluno;
+        this.planoTreino = new PlanosDeTreino(this.aluno);
     }
 
     public void exibirMenuAlunos() {
