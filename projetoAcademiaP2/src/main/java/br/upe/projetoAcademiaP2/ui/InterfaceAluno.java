@@ -1,12 +1,13 @@
 package br.upe.projetoAcademiaP2.ui;
 
+import br.upe.projetoAcademiaP2.data.beans.Comum;
 import br.upe.projetoAcademiaP2.data.beans.Usuario;
 
 import java.util.Scanner;
 
 public class InterfaceAluno {
     private final Scanner sc = new Scanner(System.in);
-    private final Usuario aluno;
+    private Usuario aluno;
     private Exercicios exercicios = new Exercicios();
     private InterfaceBiomedico indicadores = new InterfaceBiomedico();
     private PlanosDeTreino planoTreino;
@@ -14,8 +15,7 @@ public class InterfaceAluno {
 
 
     public InterfaceAluno(Usuario aluno) {
-        this.aluno = aluno;
-        this.planoTreino = new PlanosDeTreino(this.aluno);
+        this.aluno = new Comum(aluno.getNome(), aluno.getTelefone(), aluno.getEmail(), aluno.getSenha(), aluno.getPesoAtual(),aluno.getAlturaAtual(),aluno.getPercGorduraAtual());
     }
 
     public void exibirMenuAlunos() {
@@ -41,13 +41,13 @@ public class InterfaceAluno {
                         exercicios.exibirMenuExercicios();
                         break;
                     case 2:
-                        indicadores.exibirMenuIndicadores();
+                        indicadores.exibirMenuIndicadores(aluno);
                         break;
                     case 3:
                         planoTreino.exibirMenuPlanosDeTreino();
                         break;
                     case 4:
-                        relatorios.exibirMenuRelatorios();
+                        relatorios.exibirMenuRelatorios(aluno);
                         break;
                     case 5:
                         System.out.println("Saindo...");
