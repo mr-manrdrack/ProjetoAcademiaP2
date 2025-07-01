@@ -101,8 +101,7 @@
               <report>plugins</report>
               <report>issue-management</report>
               <report>mailing-lists</report>
-              <report>cim</report>
-              <report>distribution-management</report>
+              <report>ci-management</report> <report>distribution-management</report>
             </reports>
           </reportSet>
         </reportSets>
