@@ -10,7 +10,7 @@ public class InterfaceAluno {
     private Usuario aluno;
     private Exercicios exercicios = new Exercicios();
     private InterfaceBiomedico indicadores = new InterfaceBiomedico();
-    private PlanosDeTreino planoTreino = new PlanosDeTreino();
+    private PlanosDeTreino planoTreino;
     private Relatorios relatorios = new Relatorios();
 
 

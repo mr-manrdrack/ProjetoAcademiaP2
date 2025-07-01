@@ -13,7 +13,6 @@ import br.upe.projetoAcademiaP2.data.beans.PlanoTreino;
 import br.upe.projetoAcademiaP2.data.beans.SecaoTreino;
 import br.upe.projetoAcademiaP2.data.beans.Usuario;
 import br.upe.projetoAcademiaP2.business.ExercicioBusiness;
-import br.upe.projetoAcademiaP2.business.IndicadorBiomedicoBusiness;
 import br.upe.projetoAcademiaP2.business.PlanoTreinoBusiness;
 import br.upe.projetoAcademiaP2.business.SecaoTreinoBusiness;
 import br.upe.projetoAcademiaP2.business.UsuarioBusiness;
@@ -27,14 +26,17 @@ public class PlanosDeTreino {
     private Scanner sc;
     private Usuario usuarioLogado;
 
-    public PlanosDeTreino(){
+    public PlanosDeTreino(Usuario usuarioLogado){
         this.usuarioBusiness = new UsuarioBusiness();
         this.exercicioBusiness = new ExercicioBusiness();
         this.planoTreinoBusiness = new PlanoTreinoBusiness();
         this.secaoTreinoBusiness = new SecaoTreinoBusiness();
         this.sc = new Scanner(System.in);
+        this.usuarioLogado = usuarioLogado;
     }
-
+/*
+this.usuarioLogado = usuarioLogado;
+ */
     public void exibirMenuPlanosDeTreino(){
         boolean sair = false;
 
