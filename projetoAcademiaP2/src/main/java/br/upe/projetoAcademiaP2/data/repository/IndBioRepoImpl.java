@@ -3,52 +3,45 @@ package br.upe.projetoAcademiaP2.data.repository;
 import br.upe.projetoAcademiaP2.data.beans.IndicadorBiomedico;
 import br.upe.projetoAcademiaP2.data.repository.interfaces.IIndBioRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 public class IndBioRepoImpl implements IIndBioRepository {
 
-    private final Map<String, IndicadorBiomedico> indicadoresBiomedicos = new HashMap<>();
+    private ArrayList<IndicadorBiomedico> indicadoresBiomedicos = new ArrayList<IndicadorBiomedico>();
 
     @Override
-    public IndicadorBiomedico save(IndicadorBiomedico indicadorBiomedico) {
-
-        if (indicadorBiomedico.getId() == null || indicadorBiomedico.getId().isEmpty()) {
-            System.err.println("Não é possível salvar Indicador Biomédico sem um ID.");
-            return null;
+    public boolean save(IndicadorBiomedico indicadorBiomedico) {
+        try{
+            if(indicadorBiomedico == null){
+                throw new Exception();
+            }else {
+                return indicadoresBiomedicos.add(indicadorBiomedico);
+            }
+        } catch (Exception e) {
+            System.out.println("O método de salvar falhou");
         }
-        indicadoresBiomedicos.put(indicadorBiomedico.getId(), indicadorBiomedico);
-        return indicadorBiomedico;
-    }
-
-    @Override
-    public Optional<IndicadorBiomedico> findById(String id) {
-        return Optional.ofNullable(indicadoresBiomedicos.get(id));
+        return false;
     }
 
     @Override
     public List<IndicadorBiomedico> findAll() {
-        return new ArrayList<>(indicadoresBiomedicos.values());
+        return indicadoresBiomedicos;
     }
 
     @Override
-    public IndicadorBiomedico update(IndicadorBiomedico indicadorBiomedico) {
-
-        if (indicadorBiomedico.getId() == null || !indicadoresBiomedicos.containsKey(indicadorBiomedico.getId())) {
-            System.err.println("Indicador Biomédico com ID " + indicadorBiomedico.getId() + " não encontrado para atualização.");
-            return null;
+    public boolean update(IndicadorBiomedico informacaoVelha,IndicadorBiomedico informacaoNova) {
+        try {
+            for(int index = 0; index < indicadoresBiomedicos.size(); index++){
+                if(indicadoresBiomedicos.get(index) == informacaoVelha){
+                    indicadoresBiomedicos.set(index,informacaoNova);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println("O método de update falhou");
         }
-        indicadoresBiomedicos.put(indicadorBiomedico.getId(), indicadorBiomedico); // Sobrescreve o indicador existente
-        return indicadorBiomedico;
-    }
-
-    @Override
-    public void deleteById(String id) {
-        indicadoresBiomedicos.remove(id);
+        return false;
     }
 
 }

@@ -11,9 +11,7 @@ public class IndicadorBiomedicoBusiness {
     private IndBioRepoImpl indBioRepository = new IndBioRepoImpl();
     private CSVManipBusiness fileManip = new CSVManipBusiness();
 
-    public IndicadorBiomedicoBusiness(){
-
-    }
+    public IndicadorBiomedicoBusiness(){}
 
     public void cadastrarIndicador(Usuario usuario, IndicadorBiomedico indicador){
         if(usuario != null && indicador != null){
@@ -35,8 +33,8 @@ public class IndicadorBiomedicoBusiness {
         }
     }
 
-    public void atualizarIndicador(IndicadorBiomedico indicador){
-        indBioRepository.update(indicador);
+    public void atualizarIndicador(IndicadorBiomedico informacaoVelha, IndicadorBiomedico informacaoNova){
+        indBioRepository.update(informacaoVelha, informacaoNova);
     }
     public boolean importarIndicadoresDeCSV(Usuario usuario,String caminhoArquivo){
         try {
