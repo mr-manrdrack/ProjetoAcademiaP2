@@ -34,9 +34,9 @@ public class PlanosDeTreino {
         this.sc = new Scanner(System.in);
         this.usuarioLogado = usuarioLogado;
     }
-/*
-this.usuarioLogado = usuarioLogado;
- */
+    /*
+    this.usuarioLogado = usuarioLogado;
+     */
     public void exibirMenuPlanosDeTreino(){
         boolean sair = false;
 
@@ -281,7 +281,7 @@ this.usuarioLogado = usuarioLogado;
             sc.nextLine();
         }
     }
-    
+
 
     private void listarPlano() {
         PlanoTreino planoVisualizar = planoTreinoBusiness.carregarPlanoDoUsuario(usuarioLogado);
@@ -325,7 +325,7 @@ this.usuarioLogado = usuarioLogado;
 
     public void secaoTreino() {
         System.out.println("\n=== SEÇÃO DE TREINO ===");
-        
+
         // 1. Carrega o plano de treino do usuário logado.
         // A lógica de negócio agora suporta apenas um plano, então não há mais lista.
         PlanoTreino plano = planoTreinoBusiness.carregarPlanoDoUsuario(usuarioLogado);
@@ -396,7 +396,7 @@ this.usuarioLogado = usuarioLogado;
 
     private void executarTreino(PlanoTreino plano) {
         System.out.println("\n=== EXECUTANDO TREINO: " + plano.getNomePlano() + " ===");
-    
+
         boolean houveAlteracoesNoPlano = false;
 
         for (SecaoTreino secao : plano.getSecoes()) {
@@ -412,7 +412,7 @@ this.usuarioLogado = usuarioLogado;
                     int repeticoesRealizadas = Integer.parseInt(sc.nextLine());
                     System.out.print("Qual carga você usou (kg)? ");
                     int cargaRealizada = Integer.parseInt(sc.nextLine());
-                
+
                     boolean houveDiferenca = (item.getSeries() != seriesRealizadas) || (item.getRepeticoes() != repeticoesRealizadas) || (item.getCarga() != cargaRealizada);
 
                     if (houveDiferenca) {
@@ -420,8 +420,8 @@ this.usuarioLogado = usuarioLogado;
                         String resposta = sc.nextLine();
 
                         if (resposta.equalsIgnoreCase("s")) {
-                        // ALTERADO: A chamada agora é para o método mais simples do serviço de negócio.
-                        // Ele apenas atualiza o objeto em memória.
+                            // ALTERADO: A chamada agora é para o método mais simples do serviço de negócio.
+                            // Ele apenas atualiza o objeto em memória.
                             secaoTreinoBusiness.registrarPerformance(item, cargaRealizada, repeticoesRealizadas, seriesRealizadas);
                             houveAlteracoesNoPlano = true; // Marca que o plano foi modificado.
                             System.out.println("Parâmetros do exercício atualizados.");
@@ -432,12 +432,12 @@ this.usuarioLogado = usuarioLogado;
                         System.out.println("Performance conforme o planejado!");
                     }
                 } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite valores numéricos válidos.");
+                    System.out.println("Erro: Digite valores numéricos válidos.");
                 }
             }
         }
-    
-    // NOVO: Após o término de todos os exercícios, verifica se precisa salvar.
+
+        // NOVO: Após o término de todos os exercícios, verifica se precisa salvar.
         if (houveAlteracoesNoPlano) {
             System.out.println("\nSalvando todas as alterações no plano de treino...");
             planoTreinoBusiness.modificarPlanoDeTreino(plano); // Salva o estado final do plano UMA ÚNICA VEZ.

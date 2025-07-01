@@ -10,12 +10,13 @@ public class InterfaceAluno {
     private Usuario aluno;
     private Exercicios exercicios = new Exercicios();
     private InterfaceBiomedico indicadores = new InterfaceBiomedico();
-    private PlanosDeTreino planoTreino = new PlanosDeTreino(aluno);
+    private PlanosDeTreino planoTreino;
     private Relatorios relatorios = new Relatorios();
 
 
     public InterfaceAluno(Usuario aluno) {
         this.aluno = new Comum(aluno.getNome(), aluno.getTelefone(), aluno.getEmail(), aluno.getSenha(), aluno.getPesoAtual(),aluno.getAlturaAtual(),aluno.getPercGorduraAtual());
+        this.planoTreino = new PlanosDeTreino (this.aluno);
     }
 
     public void exibirMenuAlunos() {

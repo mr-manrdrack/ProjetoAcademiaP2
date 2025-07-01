@@ -14,7 +14,7 @@ public class PlanoTreinoCsvRepository {
     public PlanoTreinoCsvRepository() {
         // Usando o diretório home do usuário para garantir a portabilidade
         String projectDir = System.getProperty("user.dir");
-        
+
         // 2. Define o caminho para a pasta 'data/planos' dentro do projeto.
         // Assim, os planos ficarão ao lado dos exercícios, mas em sua própria subpasta.
         this.baseDir = projectDir + File.separator + "data" + File.separator + "planos" + File.separator;
@@ -22,7 +22,7 @@ public class PlanoTreinoCsvRepository {
         // 3. Garante que a estrutura de pastas (data/planos/) exista.
         File dir = new File(baseDir);
         if (!dir.exists()) {
-            dir.mkdirs(); 
+            dir.mkdirs();
         }
     }
 
@@ -67,7 +67,7 @@ public class PlanoTreinoCsvRepository {
         }
     }
 
-    
+
     public PlanoTreino carregarPlano(Usuario usuario) {
         String caminho = getArquivoPlano(usuario);
         File file = new File(caminho);
@@ -89,7 +89,7 @@ public class PlanoTreinoCsvRepository {
                 return null;
             }
 
-            reader.readLine(); 
+            reader.readLine();
 
             String linhaItem;
             while ((linhaItem = reader.readLine()) != null) {
@@ -103,7 +103,7 @@ public class PlanoTreinoCsvRepository {
 
                     SecaoTreino secao = plano.getOuCriarSecao(nomeSecao);
                     Exercicio exercicio = exercicioRepository.findByNome(nomeExercicio);
-                    
+
                     // CORREÇÃO: Adicionada uma mensagem de erro para o usuário
                     if (exercicio != null) {
                         ItemPlanoTreino item = new ItemPlanoTreino(exercicio, series, repeticoes, carga);
