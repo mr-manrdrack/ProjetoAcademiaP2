@@ -3,22 +3,26 @@ package br.upe.projetoAcademiaP2.data.repository;
 import br.upe.projetoAcademiaP2.data.beans.*;
 
 import java.io.*;
+import java.text.ParseException; // Adicionado para lidar com ParseException
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList; // Certifique-se de que ArrayList está importado
 
 public class PlanoTreinoCsvRepository {
 
     private final String baseDir;
     private final ExercicioRepoImpl exercicioRepository = new ExercicioRepoImpl();
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
     public PlanoTreinoCsvRepository() {
-
         String projectDir = System.getProperty("user.dir");
-
         this.baseDir = projectDir + File.separator + "data" + File.separator + "planos" + File.separator;
 
         File dir = new File(baseDir);
         if (!dir.exists()) {
-            dir.mkdirs(); 
+            dir.mkdirs();
         }
     }
 
@@ -27,30 +31,28 @@ public class PlanoTreinoCsvRepository {
     }
 
     public void salvarPlano(PlanoTreino plano) {
-        Usuario usuario = plano.getUsuario();
-        String caminho = getArquivoPlano(usuario);
+        String filePath = getArquivoPlano(plano.getUsuario());
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminho))) {
-            String metadata = String.format("%d;%s;%d;%d",
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write("id,nomePlano,inicioPlano,fimPlano,emailUsuario\n");
+
+
+            writer.write(String.format("%d,%s,%s,%s,%s\n",
                     plano.getId(),
-                    plano.getNomePlano(),
-                    plano.getInicioPlano().getTime(),
-                    plano.getFimPlano().getTime());
-            writer.write(metadata);
-            writer.newLine();
+                    escape(plano.getNomePlano()),
+                    dateFormat.format(plano.getInicioPlano()),
+                    dateFormat.format(plano.getFimPlano()),
+                    escape(plano.getUsuario().getEmail())));
 
-            writer.write("secao,exercicio,series,repeticoes,carga");
-            writer.newLine();
 
             for (SecaoTreino secao : plano.getSecoes()) {
                 for (ItemPlanoTreino item : secao.getItensPlano()) {
-                    writer.write(String.format("%s,%s,%d,%d,%d",
+                    writer.write(String.format("%s,%s,%d,%d,%d\n",
                             escape(secao.getNomeTreino()),
                             escape(item.getExercicio().getNome()),
                             item.getSeries(),
                             item.getRepeticoes(),
                             item.getCarga()));
-                    writer.newLine();
                 }
             }
         } catch (IOException e) {
@@ -58,33 +60,43 @@ public class PlanoTreinoCsvRepository {
         }
     }
 
-    
     public PlanoTreino carregarPlano(Usuario usuario) {
-        String caminho = getArquivoPlano(usuario);
-        File file = new File(caminho);
-        if (!file.exists()) return null;
+        String arquivoPlano = getArquivoPlano(usuario);
+        File file = new File(arquivoPlano);
 
-        PlanoTreino plano = null;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(caminho))) {
+        if (!file.exists()) {
+            return new PlanoTreino(0, "Erro ao carregar", new Date(), new Date(), usuario);
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(arquivoPlano))) {
+
+            reader.readLine();
+
+
             String metadataLine = reader.readLine();
-            if (metadataLine != null) {
-                String[] metadata = metadataLine.split(";", -1);
-                int id = Integer.parseInt(metadata[0]);
-                String nomePlano = metadata[1];
-                Date inicioPlano = new Date(Long.parseLong(metadata[2]));
-                Date fimPlano = new Date(Long.parseLong(metadata[3]));
-
-                plano = new PlanoTreino(id, nomePlano, inicioPlano, fimPlano, usuario);
-            } else {
-                return null;
+            if (metadataLine == null || metadataLine.trim().isEmpty()) {
+                System.err.println("Erro ao carregar plano de treino: Metadados do plano ausentes ou arquivo corrompido.");
+                return new PlanoTreino(0, "Erro ao carregar", new Date(), new Date(), usuario);
             }
 
-            reader.readLine(); 
+            String[] metadata = metadataLine.split(",", -1);
+            if (metadata.length < 5) {
+                System.err.println("Erro ao carregar plano de treino: Metadados incompletos.");
+                return new PlanoTreino(0, "Erro ao carregar", new Date(), new Date(), usuario);
+            }
 
-            String linhaItem;
-            while ((linhaItem = reader.readLine()) != null) {
-                String[] partes = linhaItem.split(",", -1);
+            int id = Integer.parseInt(metadata[0]);
+            String nomePlano = unescape(metadata[1]);
+            Date inicioPlano = dateFormat.parse(metadata[2]);
+            Date fimPlano = dateFormat.parse(metadata[3]);
+
+
+            PlanoTreino plano = new PlanoTreino(id, nomePlano, inicioPlano, fimPlano, usuario);
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] partes = line.split(",", -1);
                 if (partes.length >= 5) {
                     String nomeSecao = unescape(partes[0]);
                     String nomeExercicio = unescape(partes[1]);
@@ -94,7 +106,6 @@ public class PlanoTreinoCsvRepository {
 
                     SecaoTreino secao = plano.getOuCriarSecao(nomeSecao);
                     Exercicio exercicio = exercicioRepository.findByNome(nomeExercicio);
-                    
 
                     if (exercicio != null) {
                         ItemPlanoTreino item = new ItemPlanoTreino(exercicio, series, repeticoes, carga);
@@ -104,12 +115,13 @@ public class PlanoTreinoCsvRepository {
                     }
                 }
             }
-        } catch (IOException | NumberFormatException e) {
+            return plano;
+
+        } catch (IOException | ParseException | NumberFormatException e) {
             System.err.println("Erro ao carregar plano de treino: " + e.getMessage());
+
             return new PlanoTreino(0, "Erro ao carregar", new Date(), new Date(), usuario);
         }
-
-        return plano;
     }
 
     private String escape(String campo) {

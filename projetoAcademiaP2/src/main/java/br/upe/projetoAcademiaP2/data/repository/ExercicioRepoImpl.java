@@ -28,6 +28,10 @@ public class ExercicioRepoImpl implements IExercicioRepository {
 
     @Override
     public Exercicio create(Exercicio exercicio) {
+        if (findByNome(exercicio.getNome()) != null) {
+            System.err.println("Erro: Já existe um exercício com o nome '" + exercicio.getNome() + "'.");
+            return null;
+        }
         exercicios.add(exercicio);
         persistirNoCsv();
         return exercicio;
