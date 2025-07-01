@@ -83,54 +83,69 @@ public class Relatorios {
 
         if (lista.isEmpty()) {
             System.out.println("Nenhum indicador encontrado para este usuário.");
-        } else if (lista.size() == 1) {
-            System.out.println("\nApenas um registro encontrado. Exibindo:");
+            return;
+        }
+
+        if (lista.size() == 1) {
+            System.out.println("Apenas um registro encontrado. Exibindo:");
             imprimirIndicador(lista.get(0));
+            return;
+        }
 
-            List<List<String>> dados = List.of(Arrays.asList(
-                    "Único",
-                    String.format(Locale.US, "%.2f", lista.get(0).getPeso()),
-                    String.format(Locale.US, "%.2f", lista.get(0).getAltura()),
-                    String.format(Locale.US, "%.2f", lista.get(0).getPercentualGordura()),
-                    String.format(Locale.US, "%.2f", lista.get(0).getPercentualMassaMagra()),
-                    String.format(Locale.US, "%.2f", lista.get(0).getImc()),
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lista.get(0).getDataRegistro())
-            ));
+        // Mostrar todos os registros numerados
+        System.out.println("\nRegistros disponíveis:");
+        for (int i = 0; i < lista.size(); i++) {
+            System.out.printf("%d - Data: %s | IMC: %.2f | Peso: %.2fkg\n",
+                    i + 1,
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lista.get(i).getDataRegistro()),
+                    lista.get(i).getImc(),
+                    lista.get(i).getPeso());
+        }
 
-            salvarCSV("relatorio_comparativo_" + usuario.getEmail().replace("@", "_") + ".csv",
-                    Arrays.asList("Tipo", "Peso", "Altura", "Gordura", "Massa Magra", "IMC", "Data Registro"),
-                    dados);
+        try {
+            System.out.print("Digite o número do primeiro registro para comparar: ");
+            int primeiroIdx = Integer.parseInt(sc.nextLine()) - 1;
+            System.out.print("Digite o número do segundo registro para comparar: ");
+            int segundoIdx = Integer.parseInt(sc.nextLine()) - 1;
 
-        } else {
-            IndicadorBiomedico primeiro = lista.get(0);
-            IndicadorBiomedico ultimo = lista.get(lista.size() - 1);
+            if (primeiroIdx < 0 || segundoIdx < 0 || primeiroIdx >= lista.size() || segundoIdx >= lista.size()) {
+                System.out.println("Índices inválidos.");
+                return;
+            }
+
+            IndicadorBiomedico primeiro = lista.get(primeiroIdx);
+            IndicadorBiomedico segundo = lista.get(segundoIdx);
 
             System.out.println("\nRELATÓRIO COMPARATIVO:");
-            System.out.println("- Primeiro registro:");
+            System.out.println("- Registro " + (primeiroIdx + 1) + ":");
             imprimirIndicador(primeiro);
-            System.out.println("- Último registro:");
-            imprimirIndicador(ultimo);
+
+            System.out.println("- Registro " + (segundoIdx + 1) + ":");
+            imprimirIndicador(segundo);
 
             List<List<String>> dados = List.of(
-                    Arrays.asList("Primeiro",
+                    Arrays.asList("Registro " + (primeiroIdx + 1),
                             String.format(Locale.US, "%.2f", primeiro.getPeso()),
                             String.format(Locale.US, "%.2f", primeiro.getAltura()),
                             String.format(Locale.US, "%.2f", primeiro.getPercentualGordura()),
                             String.format(Locale.US, "%.2f", primeiro.getPercentualMassaMagra()),
                             String.format(Locale.US, "%.2f", primeiro.getImc()),
                             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(primeiro.getDataRegistro())),
-                    Arrays.asList("Último",
-                            String.format(Locale.US, "%.2f", ultimo.getPeso()),
-                            String.format(Locale.US, "%.2f", ultimo.getAltura()),
-                            String.format(Locale.US, "%.2f", ultimo.getPercentualGordura()),
-                            String.format(Locale.US, "%.2f", ultimo.getPercentualMassaMagra()),
-                            String.format(Locale.US, "%.2f", ultimo.getImc()),
-                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ultimo.getDataRegistro()))
+                    Arrays.asList("Registro " + (segundoIdx + 1),
+                            String.format(Locale.US, "%.2f", segundo.getPeso()),
+                            String.format(Locale.US, "%.2f", segundo.getAltura()),
+                            String.format(Locale.US, "%.2f", segundo.getPercentualGordura()),
+                            String.format(Locale.US, "%.2f", segundo.getPercentualMassaMagra()),
+                            String.format(Locale.US, "%.2f", segundo.getImc()),
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segundo.getDataRegistro()))
             );
 
             salvarCSV("relatorio_comparativo_" + usuario.getEmail().replace("@", "_") + ".csv",
-                    Arrays.asList("Tipo", "Peso", "Altura", "Gordura", "Massa Magra", "IMC", "Data Registro"),
+                    Arrays.asList("Registro", "Peso", "Altura", "Gordura", "Massa Magra", "IMC", "Data Registro"),
                     dados);
+
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada inválida. Digite apenas números.");
         }
     }
 
