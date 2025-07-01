@@ -18,7 +18,6 @@ public class SecaoTreinoBusiness {
         }
     }
 
-    // ALTERADO: A assinatura do método foi corrigida para usar os tipos corretos (int).
     public void registrarPerformance(ItemPlanoTreino itemOriginal, int cargaRealizada, int repeticoesRealizadas, int seriesRealizadas) {
         System.out.println("Atualizando dados do exercício '" + itemOriginal.getExercicio().getNome() + "' em memória.");
         

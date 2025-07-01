@@ -18,7 +18,6 @@ public class UsuarioBusiness {
     }
 
     public String autenticar(String email, String senha) {
-        // A lógica de autenticação agora funciona pois Usuario tem getSenha()
         Usuario usuario = usuarioRepository.findByEmail(email);
 
         if (usuario != null && usuario.getSenha().equals(senha)) {
@@ -32,13 +31,11 @@ public class UsuarioBusiness {
     }
 
     public void cadastrarUsuario(Usuario usuario) {
-        // ALTERADO: Chamando o método 'create' que existe no repositório
         usuarioRepository.create(usuario);
         System.out.println("Usuário cadastrado com sucesso!");
     }
 
     public List<Usuario> listarUsuarios() {
-        // ALTERADO: Chamando o método 'listarTodos' que agora existe
         return usuarioRepository.listarTodos();
     }
 
@@ -53,7 +50,6 @@ public class UsuarioBusiness {
     }
 
     public void deletarUsuario(String email) {
-        // ALTERADO: Lógica simplificada e chamada correta ao método 'delete'
         boolean deletado = usuarioRepository.delete(email);
         if (deletado) {
             System.out.println("Usuário removido com sucesso!");
@@ -63,7 +59,6 @@ public class UsuarioBusiness {
     }
     
     public void atualizarUsuario(Usuario usuario) {
-        // ALTERADO: Chamando o método 'update' que existe no repositório
         Usuario atualizado = usuarioRepository.update(usuario);
         if (atualizado != null) {
             System.out.println("Dados do usuário atualizados com sucesso!");

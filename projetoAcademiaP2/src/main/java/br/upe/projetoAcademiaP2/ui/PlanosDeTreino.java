@@ -34,9 +34,7 @@ public class PlanosDeTreino {
         this.sc = new Scanner(System.in);
         this.usuarioLogado = usuarioLogado;
     }
-/*
-this.usuarioLogado = usuarioLogado;
- */
+
     public void exibirMenuPlanosDeTreino(){
         boolean sair = false;
 
@@ -195,7 +193,7 @@ this.usuarioLogado = usuarioLogado;
                     int carga = Integer.parseInt(sc.nextLine());
 
                     ItemPlanoTreino item = new ItemPlanoTreino(exercicio, series, repeticoes, carga);
-                    secao.addItemSecao(item); // Adiciona o item à seção correta
+                    secao.addItemSecao(item);
                     System.out.println("'" + nomeExercicio + "' adicionado à seção '" + nomeSecao + "'.");
 
                 } catch (NumberFormatException e) {
@@ -325,18 +323,14 @@ this.usuarioLogado = usuarioLogado;
 
     public void secaoTreino() {
         System.out.println("\n=== SEÇÃO DE TREINO ===");
-        
-        // 1. Carrega o plano de treino do usuário logado.
-        // A lógica de negócio agora suporta apenas um plano, então não há mais lista.
+
         PlanoTreino plano = planoTreinoBusiness.carregarPlanoDoUsuario(usuarioLogado);
 
-        // 2. Verifica se o usuário de fato tem um plano para treinar.
         if (plano == null || plano.getSecoes().isEmpty()) {
             System.out.println("Você precisa ter um plano de treino com exercícios cadastrados para iniciar uma seção.");
             return;
         }
 
-        // 3. Se o plano existe, inicia a seção de treino.
         iniciarSecaoTreino(plano);
     }
 
@@ -420,8 +414,6 @@ this.usuarioLogado = usuarioLogado;
                         String resposta = sc.nextLine();
 
                         if (resposta.equalsIgnoreCase("s")) {
-                        // ALTERADO: A chamada agora é para o método mais simples do serviço de negócio.
-                        // Ele apenas atualiza o objeto em memória.
                             secaoTreinoBusiness.registrarPerformance(item, cargaRealizada, repeticoesRealizadas, seriesRealizadas);
                             houveAlteracoesNoPlano = true; // Marca que o plano foi modificado.
                             System.out.println("Parâmetros do exercício atualizados.");
@@ -436,8 +428,7 @@ this.usuarioLogado = usuarioLogado;
                 }
             }
         }
-    
-    // NOVO: Após o término de todos os exercícios, verifica se precisa salvar.
+
         if (houveAlteracoesNoPlano) {
             System.out.println("\nSalvando todas as alterações no plano de treino...");
             planoTreinoBusiness.modificarPlanoDeTreino(plano); // Salva o estado final do plano UMA ÚNICA VEZ.

@@ -1,4 +1,3 @@
-// Atualize a classe ExercicioRepoImpl para persistir os dados em CSV
 package br.upe.projetoAcademiaP2.data.repository;
 
 import br.upe.projetoAcademiaP2.data.beans.Exercicio;

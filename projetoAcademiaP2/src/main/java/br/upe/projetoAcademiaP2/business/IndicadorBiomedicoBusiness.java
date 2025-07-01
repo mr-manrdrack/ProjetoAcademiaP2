@@ -38,7 +38,8 @@ public class IndicadorBiomedicoBusiness {
         try {
             FileWriter writer = new FileWriter(caminhoArquivo, true);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            writer.append(String.format(
+            String dataFormatada = sdf.format(indicador.getDataRegistro());
+            writer.append(String.format(Locale.US,
                     "%s,%.2f,%.2f,%.2f,%.2f,%.2f,%s\n",
                     indicador.getEmail(),
                     indicador.getPeso(),
@@ -65,7 +66,7 @@ public class IndicadorBiomedicoBusiness {
                 double gordura = Double.parseDouble(dados[3]);
                 double massa = Double.parseDouble(dados[4]);
                 double imc = Double.parseDouble(dados[5]);
-                Date dataRegistro = new Date(); // ou parse se vier no CSV
+                Date dataRegistro = new Date();
 
                 IndicadorBiomedico ind = new IndicadorBiomedico(email, peso, altura, gordura, massa, imc, dataRegistro);
                 indBioRepository.save(ind);
