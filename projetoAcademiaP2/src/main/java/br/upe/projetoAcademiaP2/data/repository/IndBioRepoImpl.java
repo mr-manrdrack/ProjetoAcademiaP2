@@ -29,20 +29,5 @@ public class IndBioRepoImpl implements IIndBioRepository {
         return indicadoresBiomedicos;
     }
 
-    @Override
-    public boolean update(IndicadorBiomedico informacaoVelha,IndicadorBiomedico informacaoNova) {
-        try {
-            for(int index = 0; index < indicadoresBiomedicos.size(); index++){
-                if(indicadoresBiomedicos.get(index) == informacaoVelha){
-                    indicadoresBiomedicos.set(index,informacaoNova);
-                }
-            }
-            return true;
-        } catch (Exception e) {
-            System.out.println("O método de update falhou");
-        }
-        return false;
-    }
-
 }
 

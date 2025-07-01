@@ -7,6 +7,5 @@ import java.util.Optional;
 public interface IIndBioRepository {
     boolean save(IndicadorBiomedico indicadorBiomedico);
     List<IndicadorBiomedico> findAll();
-    boolean update(IndicadorBiomedico informacaoVelha, IndicadorBiomedico informacaoNova);
 }
 
