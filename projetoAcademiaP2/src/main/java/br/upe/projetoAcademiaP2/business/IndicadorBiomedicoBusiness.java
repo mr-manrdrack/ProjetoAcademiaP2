@@ -1,63 +1,80 @@
 package br.upe.projetoAcademiaP2.business;
+
 import br.upe.projetoAcademiaP2.data.beans.IndicadorBiomedico;
 import br.upe.projetoAcademiaP2.data.beans.Usuario;
 import br.upe.projetoAcademiaP2.data.repository.IndBioRepoImpl;
 
-import java.util.ArrayList;
-import java.util.Date;
-
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class IndicadorBiomedicoBusiness {
     private IndBioRepoImpl indBioRepository = new IndBioRepoImpl();
     private CSVManipBusiness fileManip = new CSVManipBusiness();
+    private final String caminhoArquivo = "data/indicadores.csv";
 
-    public IndicadorBiomedicoBusiness(){}
+    public IndicadorBiomedicoBusiness() {}
 
-    public void cadastrarIndicador(Usuario usuario, IndicadorBiomedico indicador){
-        if(usuario != null && indicador != null){
+    public void cadastrarIndicador(Usuario usuario, IndicadorBiomedico indicador) {
+        if (usuario != null && indicador != null) {
+            indicador.setEmail(usuario.getEmail());
             indBioRepository.save(indicador);
+            salvarNoCSV(indicador);
         }
     }
 
-    public ArrayList<IndicadorBiomedico> listarIndicadores(Usuario usuario){
-        try {
-            ArrayList<IndicadorBiomedico> resultado = new ArrayList<IndicadorBiomedico>();
-            for (int index = 0; index < indBioRepository.findAll().size(); index++) {
-                if(indBioRepository.findAll().get(index).getId().equals(usuario.getEmail())){
-                    resultado.add(indBioRepository.findAll().get(index));
-                }
+    public ArrayList<IndicadorBiomedico> listarIndicadores(Usuario usuario) {
+        ArrayList<IndicadorBiomedico> resultado = new ArrayList<>();
+        for (IndicadorBiomedico ind : indBioRepository.findAll()) {
+            if (ind.getEmail().equals(usuario.getEmail())) {
+                resultado.add(ind);
             }
-            return resultado;
-        } catch (Exception e) {
-            return null;
+        }
+        return resultado;
+    }
+
+    private void salvarNoCSV(IndicadorBiomedico indicador) {
+        try {
+            FileWriter writer = new FileWriter(caminhoArquivo, true);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            writer.append(String.format(
+                    "%s,%.2f,%.2f,%.2f,%.2f,%.2f,%s\n",
+                    indicador.getEmail(),
+                    indicador.getPeso(),
+                    indicador.getAltura(),
+                    indicador.getPercentualGordura(),
+                    indicador.getPercentualMassaMagra(),
+                    indicador.getImc(),
+                    sdf.format(indicador.getDataRegistro())
+            ));
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar no CSV: " + e.getMessage());
         }
     }
 
-    public boolean importarIndicadoresDeCSV(Usuario usuario,String caminhoArquivo){
+    public boolean importarIndicadoresDeCSV(Usuario usuario, String caminhoArquivo){
         try {
             ArrayList<String> arquivoParaImportar = fileManip.leitor(caminhoArquivo);
-            for (String s : arquivoParaImportar) {
-                System.out.println(s + "\n");
-            }
-            for(int index = 0; index < arquivoParaImportar.size(); index++){
+            for (String linha : arquivoParaImportar) {
+                String[] dados = linha.split(",");
+                String email = dados[0];
+                double peso = Double.parseDouble(dados[1]);
+                double altura = Double.parseDouble(dados[2]);
+                double gordura = Double.parseDouble(dados[3]);
+                double massa = Double.parseDouble(dados[4]);
+                double imc = Double.parseDouble(dados[5]);
+                Date dataRegistro = new Date(); // ou parse se vier no CSV
 
-                String linha = arquivoParaImportar.get(index);
-                String[] informacoesSeparadas = linha.split(",");
-                String id = informacoesSeparadas[0];
-                Double peso = Double.parseDouble(informacoesSeparadas[1]);
-                Double altura = Double.parseDouble(informacoesSeparadas[2]);
-                Double percentualGordura = Double.parseDouble(informacoesSeparadas[3]);
-                Double percentualMassaMagra = Double.parseDouble(informacoesSeparadas[4]);
-                Double imc = Double.parseDouble(informacoesSeparadas[5]);
-                IndicadorBiomedico indicadorImportado = new IndicadorBiomedico(id,peso,altura,percentualGordura,percentualMassaMagra,imc);
-                indBioRepository.save(indicadorImportado);
-                System.out.println("\nInformações importadas");
-                return true;
+                IndicadorBiomedico ind = new IndicadorBiomedico(email, peso, altura, gordura, massa, imc, dataRegistro);
+                indBioRepository.save(ind);
             }
+            return true;
         } catch (Exception e) {
-            System.out.println("\nAlgo deu errado. Por favor, tente novamente");
+            System.out.println("Erro ao importar indicadores: " + e.getMessage());
+            return false;
         }
-        return false;
     }
 
     public boolean exportarRelatorioEvolucao(Usuario U, Date inicio,Date fim){
@@ -67,7 +84,7 @@ public class IndicadorBiomedicoBusiness {
             ArrayList<String> stringParaExportacao = new ArrayList<String>();
             ArrayList<String> separado = new ArrayList<String>();
             for(int index = 0; index < indBioRepository.findAll().size(); index++){
-                if(indBioRepository.findAll().get(index).getId().equals(email)){
+                if(indBioRepository.findAll().get(index).getEmail().equals(email)){
                     separado.add(String.valueOf(indBioRepository.findAll().get(index).getPercentualGordura()));
                     separado.add(String.valueOf(indBioRepository.findAll().get(index).getPercentualMassaMagra()));
                     separado.add(String.valueOf(indBioRepository.findAll().get(index).getImc()));

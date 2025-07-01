@@ -81,7 +81,7 @@ public class PlanosDeTreino {
 
         PlanoTreino plano = planoTreinoBusiness.carregarPlanoDoUsuario(usuarioLogado);
 
-        if (plano == null) { // A verificação se o plano existe de fato deve ser feita aqui
+        if (plano == null) {
             System.out.println("Você não possui um plano de treino para modificar.");
             return;
         }
@@ -109,7 +109,6 @@ public class PlanosDeTreino {
                     case 4: modificarExercicioExistente(plano); break;
                     case 5: removerExercicioDoPlano(plano); break;
                     case 6:
-                        // 3. Salva o plano modificado e encerra o loop
                         planoTreinoBusiness.modificarPlanoDeTreino(plano);
                         finalizar = true;
                         break;

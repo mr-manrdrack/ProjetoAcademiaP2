@@ -1,11 +1,14 @@
 package br.upe.projetoAcademiaP2.ui;
+
 import br.upe.projetoAcademiaP2.business.*;
 import br.upe.projetoAcademiaP2.data.beans.*;
+
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class InterfaceBiomedico { //NAO ESTÁ CADASTRANDO
+public class InterfaceBiomedico {
 
     private IndicadorBiomedicoBusiness indicadorBiomedicoBusiness;
     private Scanner sc = new Scanner(System.in);
@@ -16,14 +19,14 @@ public class InterfaceBiomedico { //NAO ESTÁ CADASTRANDO
         usuarioLogado = new Comum();
     }
 
-    public void exibirMenuIndicadores(){
+    public void exibirMenuIndicadores() {
         boolean voltar = false;
         while (!voltar) {
             System.out.println("\n=== INDICADORES BIOMÉDICOS ===");
             System.out.println("1 - Cadastrar indicadores");
             System.out.println("2 - Listar indicadores");
             System.out.println("3 - Importar indicadores (CSV)");
-            System.out.println("4 - voltar");
+            System.out.println("4 - Voltar");
             System.out.print("Escolha uma opção: ");
 
             try {
@@ -70,10 +73,13 @@ public class InterfaceBiomedico { //NAO ESTÁ CADASTRANDO
             double percMassaMagra = sc.nextDouble();
             sc.nextLine();
 
-            String id = usuarioLogado.getEmail() + "_" + System.currentTimeMillis();
-            IndicadorBiomedico indicador = new IndicadorBiomedico(id, peso, altura, percGordura, percMassaMagra, null);
+            String id = usuarioLogado.getEmail();
+            double imc = peso / (altura * altura);
+            IndicadorBiomedico indicador = new IndicadorBiomedico(id, peso, altura, percGordura, percMassaMagra, imc, new Date());
 
             indicadorBiomedicoBusiness.cadastrarIndicador(usuarioLogado, indicador);
+
+            System.out.println("✅ Indicador cadastrado com sucesso!");
 
         } catch (InputMismatchException e) {
             System.out.println("Erro: Digite valores numéricos válidos.");
@@ -96,12 +102,13 @@ public class InterfaceBiomedico { //NAO ESTÁ CADASTRANDO
 
         for (int i = 0; i < indicadores.size(); i++) {
             IndicadorBiomedico ind = indicadores.get(i);
-            System.out.println("Registro " + (i + 1) + " (ID: " + ind.getId() + ")");
+            System.out.println("Registro " + (i + 1) + " (Usuário: " + ind.getEmail() + ")");
             System.out.println("Peso: " + ind.getPeso() + " kg");
             System.out.println("Altura: " + ind.getAltura() + " m");
             System.out.println("IMC: " + String.format("%.2f", ind.getImc()));
             System.out.println("Gordura: " + ind.getPercentualGordura() + "%");
             System.out.println("Massa Magra: " + ind.getPercentualMassaMagra() + "%");
+            System.out.println("Data: " + ind.getDataRegistro());
             System.out.println("-".repeat(60));
         }
     }
@@ -119,9 +126,9 @@ public class InterfaceBiomedico { //NAO ESTÁ CADASTRANDO
         boolean importado = indicadorBiomedicoBusiness.importarIndicadoresDeCSV(usuarioLogado, caminhoArquivo);
 
         if (importado) {
-            System.out.println("✅ Indicadores importados com sucesso!");
+            System.out.println("Indicadores importados com sucesso!");
         } else {
-            System.out.println("❌ Erro ao importar indicadores. Verifique o formato do arquivo.");
+            System.out.println("Erro ao importar indicadores. Verifique o formato do arquivo.");
         }
     }
 
