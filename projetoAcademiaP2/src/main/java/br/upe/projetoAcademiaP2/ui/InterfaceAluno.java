@@ -10,7 +10,7 @@ public class InterfaceAluno {
     private Usuario aluno;
     private Exercicios exercicios = new Exercicios();
     private InterfaceBiomedico indicadores = new InterfaceBiomedico();
-    private PlanosDeTreino planoTreino;
+    private PlanosDeTreino planoTreino = new PlanosDeTreino(aluno);
     private Relatorios relatorios = new Relatorios();
 
 
@@ -47,7 +47,7 @@ public class InterfaceAluno {
                         planoTreino.exibirMenuPlanosDeTreino();
                         break;
                     case 4:
-                        relatorios.exibirMenuRelatorios(aluno);
+                        relatorios.exibirMenuRelatorios();
                         break;
                     case 5:
                         System.out.println("Saindo...");
