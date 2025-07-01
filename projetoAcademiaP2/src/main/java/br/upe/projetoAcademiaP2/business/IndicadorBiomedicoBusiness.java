@@ -1,19 +1,18 @@
 package br.upe.projetoAcademiaP2.business;
 import br.upe.projetoAcademiaP2.data.beans.IndicadorBiomedico;
 import br.upe.projetoAcademiaP2.data.beans.Usuario;
-import br.upe.projetoAcademiaP2.data.repository.interfaces.IIndBioRepository;
+import br.upe.projetoAcademiaP2.data.repository.IndBioRepoImpl;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 
 public class IndicadorBiomedicoBusiness {
-    private UsuarioBusiness usuarioBusiness;
-    private IIndBioRepository indBioRepository;
+    private IndBioRepoImpl indBioRepository = new IndBioRepoImpl();
     private CSVManipBusiness fileManip = new CSVManipBusiness();
 
-    public IndicadorBiomedicoBusiness(UsuarioBusiness UB, IIndBioRepository IBR){
-        this.usuarioBusiness = UB;
-        this.indBioRepository = IBR;
+    public IndicadorBiomedicoBusiness(){
+
     }
 
     public void cadastrarIndicador(Usuario usuario, IndicadorBiomedico indicador){
@@ -39,8 +38,7 @@ public class IndicadorBiomedicoBusiness {
     public void atualizarIndicador(IndicadorBiomedico indicador){
         indBioRepository.update(indicador);
     }
-
-    public boolean importarIndicadoresDeCSV(String caminhoArquivo){
+    public boolean importarIndicadoresDeCSV(Usuario usuario,String caminhoArquivo){
         try {
             ArrayList<String> arquivoParaImportar = fileManip.leitor(caminhoArquivo);
             for (String s : arquivoParaImportar) {
@@ -49,7 +47,7 @@ public class IndicadorBiomedicoBusiness {
             for(int index = 0; index < arquivoParaImportar.size(); index++){
 
                 String linha = arquivoParaImportar.get(index);
-                String[] informacoesSeparadas = linha.split(";");
+                String[] informacoesSeparadas = linha.split(",");
                 String id = informacoesSeparadas[0];
                 Double peso = Double.parseDouble(informacoesSeparadas[1]);
                 Double altura = Double.parseDouble(informacoesSeparadas[2]);
