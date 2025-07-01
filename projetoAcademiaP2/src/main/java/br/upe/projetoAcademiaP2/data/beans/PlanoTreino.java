@@ -11,10 +11,6 @@ public class PlanoTreino {
     private Date inicioPlano;
     private Date fimPlano;
     private Usuario usuario;
-    
-    // Esta lista agora será preenchida dinamicamente. Não precisamos mais do campo 'itens'.
-    // private List<ItemPlanoTreino> itens; 
-
     private List<SecaoTreino> secoes;
 
 
@@ -27,12 +23,6 @@ public class PlanoTreino {
         this.secoes = new ArrayList<>();
     }
 
-    // --- MÉTODO CORRIGIDO ---
-    /**
-     * Retorna uma lista unificada de TODOS os itens de treino,
-     * percorrendo todas as seções do plano.
-     * @return Uma lista completa de ItemPlanoTreino.
-     */
     public List<ItemPlanoTreino> getItens() {
         List<ItemPlanoTreino> todosOsItens = new ArrayList<>();
         if (this.secoes != null) {
@@ -42,16 +32,11 @@ public class PlanoTreino {
         }
         return todosOsItens;
     }
-    
-    // O método setItens não faz mais sentido, pois a lista é dinâmica.
-    // Podemos removê-lo ou deixá-lo para compatibilidade, mas ele não será usado no fluxo correto.
+
     public void setItens(List<ItemPlanoTreino> itens) {
-        // Esta implementação agora seria complexa, pois teríamos que distribuir
-        // os itens nas seções corretas. É melhor gerenciar os itens através das seções.
         System.err.println("Aviso: setItens não é suportado. Gerencie os itens através das seções.");
     }
 
-    // O resto da classe permanece o mesmo, pois a lógica de seções está correta.
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getNomePlano() { return nomePlano; }
@@ -73,7 +58,7 @@ public class PlanoTreino {
             }
         }
     
-        String novoId = "sec_" + System.currentTimeMillis(); // Gera um ID simples e único
+        String novoId = "sec_" + System.currentTimeMillis();
         SecaoTreino nova = new SecaoTreino(novoId, nomeSecao, this); 
     
         secoes.add(nova);

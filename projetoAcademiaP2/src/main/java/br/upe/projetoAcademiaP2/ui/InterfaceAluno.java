@@ -48,7 +48,7 @@ public class InterfaceAluno {
                         planoTreino.exibirMenuPlanosDeTreino();
                         break;
                     case 4:
-                        relatorios.exibirMenuRelatorios();
+                        relatorios.exibirMenuRelatorios(aluno);
                         break;
                     case 5:
                         System.out.println("Saindo...");

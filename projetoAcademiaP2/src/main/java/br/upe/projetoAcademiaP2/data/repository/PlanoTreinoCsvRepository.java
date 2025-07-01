@@ -8,21 +8,17 @@ import java.util.Date;
 public class PlanoTreinoCsvRepository {
 
     private final String baseDir;
-    // O ideal é ter um repositório de exercícios injetado para buscar os exercícios pelo nome
     private final ExercicioRepoImpl exercicioRepository = new ExercicioRepoImpl();
 
     public PlanoTreinoCsvRepository() {
-        // Usando o diretório home do usuário para garantir a portabilidade
+
         String projectDir = System.getProperty("user.dir");
 
-        // 2. Define o caminho para a pasta 'data/planos' dentro do projeto.
-        // Assim, os planos ficarão ao lado dos exercícios, mas em sua própria subpasta.
         this.baseDir = projectDir + File.separator + "data" + File.separator + "planos" + File.separator;
 
-        // 3. Garante que a estrutura de pastas (data/planos/) exista.
         File dir = new File(baseDir);
         if (!dir.exists()) {
-            dir.mkdirs();
+            dir.mkdirs(); 
         }
     }
 
@@ -30,14 +26,11 @@ public class PlanoTreinoCsvRepository {
         return baseDir + "plano_" + usuario.getEmail().replaceAll("[^a-zA-Z0-9]", "_") + ".csv";
     }
 
-    // ALTERADO: Método salvarPlano agora persiste os metadados do plano na primeira linha
     public void salvarPlano(PlanoTreino plano) {
         Usuario usuario = plano.getUsuario();
         String caminho = getArquivoPlano(usuario);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminho))) {
-            // Linha 1: Metadados do Plano (id;nome;inicio_ms;fim_ms)
-            // Usamos ';' para os metadados para não conflitar com as vírgulas dos itens
             String metadata = String.format("%d;%s;%d;%d",
                     plano.getId(),
                     plano.getNomePlano(),
@@ -46,11 +39,9 @@ public class PlanoTreinoCsvRepository {
             writer.write(metadata);
             writer.newLine();
 
-            // Linha 2: Cabeçalho dos Itens
             writer.write("secao,exercicio,series,repeticoes,carga");
             writer.newLine();
 
-            // Linhas seguintes: Itens do plano
             for (SecaoTreino secao : plano.getSecoes()) {
                 for (ItemPlanoTreino item : secao.getItensPlano()) {
                     writer.write(String.format("%s,%s,%d,%d,%d",
@@ -67,7 +58,7 @@ public class PlanoTreinoCsvRepository {
         }
     }
 
-
+    
     public PlanoTreino carregarPlano(Usuario usuario) {
         String caminho = getArquivoPlano(usuario);
         File file = new File(caminho);
@@ -89,7 +80,7 @@ public class PlanoTreinoCsvRepository {
                 return null;
             }
 
-            reader.readLine();
+            reader.readLine(); 
 
             String linhaItem;
             while ((linhaItem = reader.readLine()) != null) {
@@ -103,13 +94,12 @@ public class PlanoTreinoCsvRepository {
 
                     SecaoTreino secao = plano.getOuCriarSecao(nomeSecao);
                     Exercicio exercicio = exercicioRepository.findByNome(nomeExercicio);
+                    
 
-                    // CORREÇÃO: Adicionada uma mensagem de erro para o usuário
                     if (exercicio != null) {
                         ItemPlanoTreino item = new ItemPlanoTreino(exercicio, series, repeticoes, carga);
                         secao.addItemSecao(item);
                     } else {
-                        // Esta mensagem agora te dirá qual exercício está faltando.
                         System.err.println("AVISO: O exercício '" + nomeExercicio + "' listado no plano de treino não foi encontrado no arquivo de exercícios e será ignorado.");
                     }
                 }

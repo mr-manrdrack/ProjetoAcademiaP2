@@ -18,7 +18,6 @@ public class SecaoTreino {
         this.itensPlano = new ArrayList<>();
     }
 
-    // Getters e Setters...
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     public String getNomeTreino() { return nomeTreino; }
@@ -27,14 +26,11 @@ public class SecaoTreino {
     public void setPlanoTreino(PlanoTreino planoTreino) { this.planoTreino = planoTreino; }
     public List<ItemPlanoTreino> getItensPlano() { return itensPlano; }
 
-    // ALTERADO: Nome do método corrigido para consistência
     public void setItensPlano(List<ItemPlanoTreino> itensPlano) {
         this.itensPlano = itensPlano;
     }
 
     public void addItemSecao(ItemPlanoTreino item) {
-        // ALTERADO: Verificação de nulidade removida por ser redundante,
-        // já que os construtores já inicializam a lista.
         this.itensPlano.add(item);
     }
 }

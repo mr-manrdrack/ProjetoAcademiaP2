@@ -21,7 +21,6 @@ public class IndicadorBiomedico {
         this.dataRegistro = dataRegistro;
     }
 
-    // Getters e Setters
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }

@@ -18,28 +18,21 @@ public class PlanoTreinoBusiness {
         this.planoRepository = new PlanoTreinoCsvRepository();
     }
 
-    /**
-     * Cadastra o plano de treino do usuário e persiste no CSV
-     */
     public void cadastrarPlanoDeTreino(Usuario usuario, PlanoTreino plano) {
         if (usuario == null || plano == null) {
             System.err.println("Usuário ou Plano de Treino nulos.");
             return;
         }
 
-        // Atualiza referência interna e substitui qualquer plano anterior
         plano.setUsuario(usuario);
-        usuario.setPlanTreinos(List.of(plano));  // substitui qualquer plano antigo
+        usuario.setPlanTreinos(List.of(plano));
 
         usuarioRepository.update(usuario);
         planoRepository.salvarPlano(plano);
 
-        System.out.println("✅ Plano de treino '" + plano.getNomePlano() + "' cadastrado para o usuário " + usuario.getNome());
+        System.out.println("Plano de treino '" + plano.getNomePlano() + "' cadastrado para o usuário " + usuario.getNome());
     }
 
-    /**
-     * Carrega o plano salvo no disco para o usuário
-     */
     public PlanoTreino carregarPlanoDoUsuario(Usuario usuario) {
         if (usuario == null) {
             System.err.println("Usuário nulo.");
@@ -51,13 +44,10 @@ public class PlanoTreinoBusiness {
         if (plano != null) {
             plano.setUsuario(usuario);
         }
-        
-        // Retorna o plano encontrado, ou null se nenhum plano existir para este usuário.
+
         return plano;
     }
-    /**
-     * Atualiza apenas o plano salvo (sem alterar dados do usuário no CSV de usuários)
-     */
+
     public void modificarPlanoDeTreino(PlanoTreino plano) {
         if (plano == null || plano.getUsuario() == null) {
             System.err.println("Plano ou usuário nulos.");
@@ -65,14 +55,11 @@ public class PlanoTreinoBusiness {
         }
 
         planoRepository.salvarPlano(plano);
-        System.out.println("🔁 Plano de treino atualizado com sucesso!");
+        System.out.println("Plano de treino atualizado com sucesso!");
     }
 
-    /**
-     * Para visualização completa do plano (com seções e exercícios)
-     */
     public void exibirPlanoDeTreino(PlanoTreino plano) {
-        System.out.println("📋 Plano: " + plano.getNomePlano());
+        System.out.println("Plano: " + plano.getNomePlano());
 
         for (var secao : plano.getSecoes()) {
             System.out.println("  ➤ Seção: " + secao.getNomeTreino());

@@ -22,19 +22,12 @@ public class UsuarioCsvRepository implements IUsuarioRepository {
         carregarDoCsv();
     }
 
-    /**
-     * Define o caminho para salvar o CSV fora da pasta src,
-     * dentro de uma pasta chamada "data/" na raiz do projeto.
-     */
     private String obterCaminhoCsv() {
         String basePath = System.getProperty("user.dir"); // raiz do projeto
         String relativePath = "/data/usuarios.csv";
         return basePath + relativePath;
     }
 
-    /**
-     * Cria a pasta "data/" caso ela ainda não exista.
-     */
     private void criarDiretorioSeNecessario() {
         File file = new File(this.filePath);
         File parent = file.getParentFile();
@@ -117,9 +110,9 @@ public class UsuarioCsvRepository implements IUsuarioRepository {
                 writer.write(linha);
                 writer.newLine();
             }
-            System.out.println("💾 CSV salvo com sucesso: " + this.filePath);
+            System.out.println("CSV salvo com sucesso: " + this.filePath);
         } catch (IOException e) {
-            System.err.println("❌ Erro ao salvar CSV: " + e.getMessage());
+            System.err.println("Erro ao salvar CSV: " + e.getMessage());
         }
     }
 
@@ -132,10 +125,10 @@ public class UsuarioCsvRepository implements IUsuarioRepository {
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(this.filePath))) {
-            reader.readLine(); // Pula o cabeçalho
+            reader.readLine();
             String linha;
             while ((linha = reader.readLine()) != null) {
-                String[] dados = linha.split(",", -1); // -1 para pegar campos vazios
+                String[] dados = linha.split(",", -1);
 
                 if (dados.length < 4) continue;
 
