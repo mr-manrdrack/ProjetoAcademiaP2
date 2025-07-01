@@ -8,7 +8,7 @@ public class InterfaceAluno {
     private final Scanner sc = new Scanner(System.in);
     private final Usuario aluno;
     private Exercicios exercicios = new Exercicios();
-    private IndicadoresAluno indicadores = new IndicadoresAluno();
+    private InterfaceBiomedico indicadores = new InterfaceBiomedico();
     private PlanosDeTreino planoTreino = new PlanosDeTreino();
     private Relatorios relatorios = new Relatorios();
 

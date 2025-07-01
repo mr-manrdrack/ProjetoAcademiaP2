@@ -1,15 +1,11 @@
 package br.upe.projetoAcademiaP2.ui;
 import br.upe.projetoAcademiaP2.business.*;
 import br.upe.projetoAcademiaP2.data.beans.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.UUID;
 
-public class InterfaceBiomedico {
+public class InterfaceBiomedico { //NAO ESTÁ CADASTRANDO
 
     private IndicadorBiomedicoBusiness indicadorBiomedicoBusiness;
     private Scanner sc = new Scanner(System.in);
@@ -18,10 +14,9 @@ public class InterfaceBiomedico {
     public InterfaceBiomedico() {
         indicadorBiomedicoBusiness = new IndicadorBiomedicoBusiness();
         usuarioLogado = new Comum();
-        mainLoop();
     }
 
-    public void mainLoop(){
+    public void exibirMenuIndicadores(){
         boolean voltar = false;
         while (!voltar) {
             System.out.println("\n=== INDICADORES BIOMÉDICOS ===");
