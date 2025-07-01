@@ -44,9 +44,8 @@ public class PlanosDeTreino {
             System.out.println("=".repeat(20));
             System.out.println("1 - Cadastrar plano de treino");
             System.out.println("2 - Listar plano de treino");
-            System.out.println("3 - Excluir plano de treino");
-            System.out.println("4 - Modificar plano de treino");
-            System.out.println("5 - Sair");
+            System.out.println("3 - Modificar plano de treino");
+            System.out.println("4 - Sair");
             System.out.print("Escolha uma opção: ");
 
             try {
@@ -55,18 +54,15 @@ public class PlanosDeTreino {
 
                 switch (opcao){
                     case 1:
-                        cadastrarPlano();
+                        cadastrarPlanoTreino();
                         break;
                     case 2:
                         listarPlano();
                         break;
                     case 3:
-                        excluirPlano();
-                        break;
-                    case 4:
                         modificarPlano();
                         break;
-                    case 5:
+                    case 4:
                         System.out.println("Saindo...");
                         sair = true;
                         break;
@@ -280,13 +276,47 @@ public class PlanosDeTreino {
             sc.nextLine();
         }
     }
-
-    private void excluirPlano() {
-    }
+    
 
     private void listarPlano() {
+        PlanoTreino planoVisualizar = planoTreinoBusiness.carregarPlanoDoUsuario(usuarioLogado);
+
+        if (planoVisualizar != null){
+            planoTreinoBusiness.exibirPlanoDeTreino(planoVisualizar);
+        } else {
+            System.out.println("Você ainda não possui um plano de treino cadastrado.");
+        }
     }
 
     private void cadastrarPlanoTreino() {
+        System.out.println("\n=== CADASTRAR NOVO PLANO DE TREINO ===");
+
+        try {
+            System.out.print("Nome do plano: ");
+            String nomePlano = sc.nextLine();
+
+            System.out.print("Data de início (dd/MM/yyyy): ");
+            String dataInicioStr = sc.nextLine();
+
+            System.out.print("Data de fim (dd/MM/yyyy): ");
+            String dataFimStr = sc.nextLine();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date dataInicio = sdf.parse(dataInicioStr);
+            Date dataFim = sdf.parse(dataFimStr);
+
+            PlanoTreino novoPlano = new PlanoTreino(0, nomePlano, dataInicio, dataFim, usuarioLogado);
+
+            coletarExerciciosParaPlano(novoPlano);
+
+            planoTreinoBusiness.cadastrarPlanoDeTreino(usuarioLogado, novoPlano);
+
+        } catch (ParseException e) {
+            System.out.println("Erro: Formato de data inválido. Use dd/MM/yyyy");
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar plano: " + e.getMessage());
+        }
     }
-}
+
+
+    }
