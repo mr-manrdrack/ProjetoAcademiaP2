@@ -6,7 +6,6 @@ import java.util.Optional;
 
 public interface IIndBioRepository {
     IndicadorBiomedico save(IndicadorBiomedico indicadorBiomedico);
-
     Optional<IndicadorBiomedico> findById(String id);
     List<IndicadorBiomedico> findAll();
     IndicadorBiomedico update(IndicadorBiomedico indicadorBiomedico);
