@@ -1,8 +1,6 @@
 package br.upe.projetoAcademiaP2.ui;
-
 import br.upe.projetoAcademiaP2.business.*;
 import br.upe.projetoAcademiaP2.data.beans.*;
-
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -16,10 +14,10 @@ public class InterfaceBiomedico {
 
     public InterfaceBiomedico() {
         indicadorBiomedicoBusiness = new IndicadorBiomedicoBusiness();
-        usuarioLogado = new Comum();
     }
 
-    public void exibirMenuIndicadores() {
+    public void exibirMenuIndicadores(Usuario aluno) {
+        usuarioLogado = new Comum(aluno.getNome(), aluno.getTelefone(), aluno.getEmail(), aluno.getSenha(), aluno.getPesoAtual(),aluno.getAlturaAtual(),aluno.getPercGorduraAtual());
         boolean voltar = false;
         while (!voltar) {
             System.out.println("\n=== INDICADORES BIOMÉDICOS ===");
@@ -62,13 +60,13 @@ public class InterfaceBiomedico {
         try {
             System.out.print("Peso (kg): ");
             double peso = sc.nextDouble();
-
+            sc.nextLine();
             System.out.print("Altura (m): ");
             double altura = sc.nextDouble();
-
+            sc.nextLine();
             System.out.print("Percentual de gordura (%): ");
             double percGordura = sc.nextDouble();
-
+            sc.nextLine();
             System.out.print("Percentual de massa magra (%): ");
             double percMassaMagra = sc.nextDouble();
             sc.nextLine();
