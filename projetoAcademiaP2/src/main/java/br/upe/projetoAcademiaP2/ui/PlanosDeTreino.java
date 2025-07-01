@@ -1,6 +1,13 @@
 package br.upe.projetoAcademiaP2.ui;
 
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
+
+import br.upe.projetoAcademiaP2.data.beans.PlanoTreino;
+import br
 
 public class PlanosDeTreino {
     private final Scanner sc = new Scanner(System.in);
@@ -59,6 +66,34 @@ public class PlanosDeTreino {
     private void listarPlano() {
     }
 
-    private void cadastrarPlano() {
+    private void cadastrarPlanoTreino() {
+        
+        System.out.println("\n=== CADASTRAR NOVO PLANO DE TREINO ===");
+
+        try {
+            System.out.print("Nome do plano: ");
+            String nomePlano = sc.nextLine();
+
+            System.out.print("Data de início (dd/MM/yyyy): ");
+            String dataInicioStr = sc.nextLine();
+
+            System.out.print("Data de fim (dd/MM/yyyy): ");
+            String dataFimStr = sc.nextLine();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date dataInicio = sdf.parse(dataInicioStr);
+            Date dataFim = sdf.parse(dataFimStr);
+
+            PlanoTreino novoPlano = new PlanoTreino(0, nomePlano, dataInicio, dataFim, usuarioLogado);
+
+            coletarExerciciosParaPlano(novoPlano);
+
+            planoTreinoBusiness.cadastrarPlanoDeTreino(usuarioLogado, novoPlano);
+
+        } catch (ParseException e) {
+            System.out.println("Erro: Formato de data inválido. Use dd/MM/yyyy");
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar plano: " + e.getMessage());
+        }
     }
 }
