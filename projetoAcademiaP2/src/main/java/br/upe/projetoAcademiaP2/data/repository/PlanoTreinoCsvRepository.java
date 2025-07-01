@@ -67,16 +67,15 @@ public class PlanoTreinoCsvRepository {
         }
     }
 
-    // ALTERADO: Método carregarPlano agora lê os metadados da primeira linha
+    
     public PlanoTreino carregarPlano(Usuario usuario) {
         String caminho = getArquivoPlano(usuario);
         File file = new File(caminho);
-        if (!file.exists()) return null; // Retorna null se não existe plano salvo
+        if (!file.exists()) return null;
 
         PlanoTreino plano = null;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(caminho))) {
-            // Lê a primeira linha (metadados)
             String metadataLine = reader.readLine();
             if (metadataLine != null) {
                 String[] metadata = metadataLine.split(";", -1);
@@ -85,16 +84,13 @@ public class PlanoTreinoCsvRepository {
                 Date inicioPlano = new Date(Long.parseLong(metadata[2]));
                 Date fimPlano = new Date(Long.parseLong(metadata[3]));
 
-                // Cria o objeto PlanoTreino com os dados corretos lidos do arquivo
                 plano = new PlanoTreino(id, nomePlano, inicioPlano, fimPlano, usuario);
             } else {
-                return null; // Arquivo vazio ou inválido
+                return null;
             }
 
-            // Pula a segunda linha (cabeçalho dos itens)
-            reader.readLine();
+            reader.readLine(); 
 
-            // Lê as linhas dos itens
             String linhaItem;
             while ((linhaItem = reader.readLine()) != null) {
                 String[] partes = linhaItem.split(",", -1);
@@ -106,17 +102,20 @@ public class PlanoTreinoCsvRepository {
                     int carga = Integer.parseInt(partes[4]);
 
                     SecaoTreino secao = plano.getOuCriarSecao(nomeSecao);
-                    // Busca o exercício completo no repositório de exercícios
-                    Exercicio exercicio = exercicioRepository.findByNome(nomeExercicio); 
+                    Exercicio exercicio = exercicioRepository.findByNome(nomeExercicio);
+                    
+                    // CORREÇÃO: Adicionada uma mensagem de erro para o usuário
                     if (exercicio != null) {
                         ItemPlanoTreino item = new ItemPlanoTreino(exercicio, series, repeticoes, carga);
                         secao.addItemSecao(item);
+                    } else {
+                        // Esta mensagem agora te dirá qual exercício está faltando.
+                        System.err.println("AVISO: O exercício '" + nomeExercicio + "' listado no plano de treino não foi encontrado no arquivo de exercícios e será ignorado.");
                     }
                 }
             }
         } catch (IOException | NumberFormatException e) {
             System.err.println("Erro ao carregar plano de treino: " + e.getMessage());
-            // Retorna um plano vazio em caso de erro para não quebrar a aplicação
             return new PlanoTreino(0, "Erro ao carregar", new Date(), new Date(), usuario);
         }
 
