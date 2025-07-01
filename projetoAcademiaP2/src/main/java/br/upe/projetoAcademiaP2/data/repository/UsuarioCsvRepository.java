@@ -17,13 +17,20 @@ public class UsuarioCsvRepository implements IUsuarioRepository {
 
     public UsuarioCsvRepository() {
         this.filePath = obterCaminhoCsv();
-        criarDiretorioSeNecessario(); // Garante que a pasta "data/" exista
+        criarDiretorioSeNecessario();
+        this.usuarios = new ArrayList<>();
+        carregarDoCsv();
+    }
+
+    public UsuarioCsvRepository(String caminhoPersonalizado) {
+        this.filePath = caminhoPersonalizado;
+        criarDiretorioSeNecessario();
         this.usuarios = new ArrayList<>();
         carregarDoCsv();
     }
 
     private String obterCaminhoCsv() {
-        String basePath = System.getProperty("user.dir"); // raiz do projeto
+        String basePath = System.getProperty("user.dir");
         String relativePath = "/data/usuarios.csv";
         return basePath + relativePath;
     }
@@ -144,7 +151,7 @@ public class UsuarioCsvRepository implements IUsuarioRepository {
                 if (dados.length > 7 && !dados[7].isEmpty()) usuario.setPercGorduraAtual(Double.parseDouble(dados[7]));
 
                 this.usuarios.add(usuario);
-                
+
             }
         } catch (IOException e) {
             System.err.println(" Erro ao carregar CSV: " + e.getMessage());
